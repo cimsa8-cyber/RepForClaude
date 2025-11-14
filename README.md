@@ -1,269 +1,90 @@
-# 💼 Sistema de Finanzas v4.0 - CRM/SAP en Excel
+# 📊 Sistema de Finanzas v4.0 - AlvaroVelascoNet SRL
 
-**Versión:** 4.0
-**Fecha:** 14 de Noviembre, 2025
-**Estado:** ✅ PRODUCCIÓN
-
----
-
-## 🎯 OBJETIVO
-
-Sistema de gestión financiera en Excel que funciona como CRM/SAP, con:
-- Control de ingresos y egresos
-- Gestión de Cuentas por Pagar (CxP)
-- Gestión de Cuentas por Cobrar (CxC)
-- Dashboard de resumen
-- Automatización con Python
-
-## 🔧 MEJORAS DE V4.0
-
-Esta versión corrige **TODOS** los errores críticos de v3.0:
-
-### ✅ Problemas Resueltos
-
-1. **Columnas Alineadas:** Sistema de mapeo dinámico de columnas
-2. **CxP/CxC Funcionales:** Validación automática de fórmulas
-3. **Formato Correcto:** DD/MM/YYYY para fechas, ₡#,##0.00 para moneda
-4. **Validación Pre/Post:** Verificación antes y después de cada operación
-5. **Scripts Seguros:** No más hardcoded indices, todo mapeado
-
-### 🚀 Nuevas Características
-
-- 🔍 Auditoría automática después de cada operación
-- 💾 Respaldos automáticos antes de cambios destructivos
-- 📊 Validador de integridad de datos
-- 🧪 Modo prueba (archivo separado) antes de producción
-- 📈 Reportes de migración con estadísticas
+**Proyecto de Sanitización Financiera**  
+**Fecha Inicio:** 12 Noviembre 2025  
+**Estado:** ✅ **SISTEMA BASE COMPLETO (90%)** - Listo para uso diario  
+**Branch Actual:** `claude/debt-strategy-integration-014fPdRrum1oDub8pdGg4sCt`
 
 ---
 
-## 📁 ESTRUCTURA DEL PROYECTO
+## 🎯 ESTADO DEL PROYECTO
 
-```
-finanzas_v4/
-├── src/
-│   ├── config.py              # Definición de estructura Excel
-│   ├── validaciones.py        # Funciones de validación
-│   ├── operaciones.py         # CRUD seguro
-│   ├── generar_v4.py          # Genera Excel limpio v4.0
-│   ├── migracion.py           # Migra datos de v3 a v4
-│   └── auditoria.py           # Auditoría post-operación
-├── docs/
-│   ├── DIAGNOSTICO_V3.md      # Análisis de errores v3.0
-│   └── GUIA_USO.md            # Guía de usuario
-├── backups/                   # Respaldos automáticos
-├── tests/                     # Archivos de prueba
-├── requirements.txt           # Dependencias Python
-└── README.md                  # Este archivo
-```
+### ✅ COMPLETADO (90%)
 
----
+- ✅ **Archivo Excel de Producción** con 15 saldos iniciales
+- ✅ **Sistema ALIAS** (12 alias pre-cargados: 7 BNCR + 4 tarjetas + 1 proveedor)
+- ✅ **Automatización CxP/CxC** (hojas protegidas con fórmulas)
+- ✅ **Script de Agregar Transacciones** (interactivo, con plantillas)
+- ✅ **Script de Consulta Rápida** (ver saldos, CxP, CxC)
+- ✅ **Módulo de Optimización de Pagos** (análisis de estrategias)
+- ✅ **Análisis de 113 Scripts v3.0** (categorizado y comparado vs v4.0)
+- ✅ **Guía de Uso Rápido** (documentación completa)
+- ✅ **Política de Seguridad** (.gitignore configurado)
 
-## 🛠️ INSTALACIÓN
+### ⏳ PENDIENTE (10%)
 
-### Requisitos
-- Python 3.8+
-- pip
-
-### Instalación de Dependencias
-
-```bash
-pip install -r requirements.txt
-```
+- ⏳ Estados Financieros (P&L, Balance, Cash Flow)
+- ⏳ Gráficas y Dashboards avanzados
+- ⏳ Conciliación bancaria automática
 
 ---
 
-## 📖 USO RÁPIDO
+## 🚀 INICIO RÁPIDO
 
-### 1. Generar Archivo Excel Limpio v4.0
+### 1. Agregar Transacciones
 
-```bash
-cd finanzas_v4/src
-python generar_v4.py
-```
+\`\`\`bash
+python agregar_transaccion.py
+\`\`\`
 
-**Salida:** `AlvaroVelasco_Finanzas_v4.0.xlsx` con estructura correcta
+**Plantillas disponibles:**
+- Ingreso por Venta
+- Pago Tarjeta de Crédito
+- Gasto Operativo
+- Cuenta por Pagar (CxP)
+- Cuenta por Cobrar (CxC)
 
-### 2. Migrar Datos de v3.0 a v4.0
+### 2. Consultar Estado
 
-```bash
-python migracion.py --origen ../AlvaroVelasco_Finanzas_v3.0.xlsx --destino ../AlvaroVelasco_Finanzas_v4.0.xlsx
-```
+\`\`\`bash
+python consultar.py              # Ver resumen completo
+python consultar.py --saldos     # Solo saldos
+python consultar.py --cxp        # Solo CxP
+python consultar.py --cxc        # Solo CxC
+\`\`\`
 
-**Funcionalidad:**
-- Lee v3.0 (potencialmente corrupta)
-- Valida cada fila
-- Migra solo datos válidos
-- Limpia duplicados
-- Valida CxP/CxC funcionan
-- Genera reporte de migración
+### 3. Ver Análisis de Optimización
 
-### 3. Insertar Transacción (Seguro)
-
-```python
-from operaciones import insertar_transaccion
-
-data = {
-    'Fecha': '01/11/2025',
-    'Tipo': 'EGRESO',
-    'Categoría': 'Operaciones',
-    'Subcategoría': 'Nómina',
-    'Descripción': 'Pago de salario',
-    'Monto': 500000,
-    'Estado': 'PAGADO'
-}
-
-insertar_transaccion('v4.0.xlsx', data)
-```
-
-### 4. Auditar Archivo
-
-```bash
-python auditoria.py --archivo ../AlvaroVelasco_Finanzas_v4.0.xlsx
-```
-
-**Validaciones:**
-- ✅ Estructura de columnas correcta
-- ✅ Formatos de fecha/moneda aplicados
-- ✅ CxP tiene datos si existen PENDIENTES
-- ✅ CxC tiene datos si existen POR COBRAR
-- ✅ Fórmulas funcionando
-- ✅ No hay duplicados
+\`\`\`bash
+python finanzas_v4/src/analisis_optimizacion_actual.py
+\`\`\`
 
 ---
 
-## 📊 ESTRUCTURA DEL EXCEL v4.0
+## 📚 DOCUMENTACIÓN
 
-### Hoja: TRANSACCIONES
+### Para Uso Diario
+📖 **Ver:** `finanzas_v4/GUIA_USO_RAPIDO.md`
 
-| Col | Campo              | Formato       | Ejemplo                |
-|-----|--------------------|---------------|------------------------|
-| A   | Fecha              | DD/MM/YYYY    | 01/11/2025             |
-| B   | Tipo               | Texto         | EGRESO                 |
-| C   | Categoría          | Texto         | Operaciones            |
-| D   | Subcategoría       | Texto         | Nómina                 |
-| E   | Descripción        | Texto         | Pago de salario        |
-| F   | Entidad            | Texto         | Juan Pérez             |
-| G   | Cuenta             | Texto         | BAC Corriente          |
-| H   | Método Pago        | Texto         | Transferencia          |
-| I   | Monto              | ₡#,##0.00     | ₡500,000.00            |
-| J   | Referencia         | Texto         | TRF-001                |
-| K   | Notas              | Texto         | Pago quincenal         |
-| L   | Estado             | Texto         | PAGADO / PENDIENTE     |
-| M   | IVA                | ₡#,##0.00     | ₡65,000.00             |
-| N   | Fecha Vencimiento  | DD/MM/YYYY    | 15/11/2025             |
-| O   | Número Factura     | Texto         | FAC-2025-001           |
-
-### Hoja: CxP (Cuentas por Pagar)
-
-Muestra automáticamente transacciones con **Estado = PENDIENTE**
-
-### Hoja: CxC (Cuentas por Cobrar)
-
-Muestra automáticamente transacciones con **Estado = POR COBRAR**
-
-### Hoja: RESUMEN
-
-Dashboard con totales, gráficos y métricas clave.
+### Para Entender el Sistema
+📚 **Ver:** `finanzas_v4/docs/GUIA_APRENDIZAJE_MEJORADA.md`
 
 ---
 
-## 🔒 VALIDACIONES AUTOMÁTICAS
+## 📊 DATOS ACTUALES (14/11/2025)
 
-### Pre-Operación
-- ✅ Headers coinciden con estructura definida
-- ✅ Datos tienen formato correcto
-- ✅ No hay filas duplicadas antes de insertar
+### 💰 Efectivo Disponible
+- **TOTAL:** ₡45,693.74 + $8,389.54
 
-### Post-Operación
-- ✅ CxP muestra PENDIENTES correctamente
-- ✅ CxC muestra POR COBRAR correctamente
-- ✅ Formatos aplicados (fecha/moneda)
-- ✅ Fórmulas funcionando
-- ✅ Integridad de referencias
+### 💳 Deuda Tarjetas (4 tarjetas)
+- **TOTAL DEUDA:** ₡6,943,858.36 + $2,306.50
+- ⚠️ **Credomatic:** Pago urgente 15/11/2025
 
----
-
-## 🚨 RESPALDOS
-
-Antes de cualquier operación destructiva:
-
-```python
-from operaciones import crear_respaldo
-
-crear_respaldo('v4.0.xlsx')
-# Crea: backups/v4.0_20251114_083000.xlsx
-```
+### 📊 Posición Neta
+- **Colones:** ₡-6,898,164.62 🔴
+- **Dólares:** $6,083.04 🟢
 
 ---
 
-## 📚 DOCUMENTACIÓN ADICIONAL
-
-- [DIAGNOSTICO_V3.md](docs/DIAGNOSTICO_V3.md) - Análisis completo de errores v3.0
-- [GUIA_USO.md](docs/GUIA_USO.md) - Guía detallada de uso
-
----
-
-## 🐛 SOLUCIÓN DE PROBLEMAS
-
-### CxP/CxC vacías
-
-```bash
-python auditoria.py --archivo v4.0.xlsx --verbose
-```
-
-Verifica:
-- ¿Columna L (Estado) tiene valores?
-- ¿Existen transacciones PENDIENTES/POR COBRAR?
-- ¿Fórmulas apuntan a columna correcta?
-
-### Formato de fecha incorrecto
-
-```python
-from operaciones import corregir_formatos
-
-corregir_formatos('v4.0.xlsx')
-```
-
-### Migración falló
-
-Revisa: `logs/migracion_YYYYMMDD_HHMMSS.log`
-
----
-
-## ✅ CHECKLIST PRE-PRODUCCIÓN
-
-Antes de usar v4.0:
-
-- [ ] ✅ Ejecutar `generar_v4.py`
-- [ ] ✅ Validar estructura con `auditoria.py`
-- [ ] ✅ Migrar datos con `migracion.py` (si aplica)
-- [ ] ✅ Probar inserción en archivo TEST
-- [ ] ✅ Verificar CxP tiene datos
-- [ ] ✅ Verificar CxC tiene datos
-- [ ] ✅ Confirmar formatos DD/MM/YYYY visibles
-- [ ] ✅ Crear respaldo antes de producción
-
----
-
-## 🤝 CONTRIBUCIONES
-
-Sistema desarrollado aplicando lecciones de:
-- v1.0: Primera versión
-- v2.0: Mejoras de estructura
-- v3.0: ❌ Errores críticos (documentados)
-- **v4.0:** ✅ Sistema robusto y validado
-
----
-
-## 📞 SOPORTE
-
-Para reportar problemas o sugerencias:
-- Revisar `docs/DIAGNOSTICO_V3.md` para entender errores previos
-- Ejecutar `auditoria.py` para diagnóstico automático
-
----
-
-**Desarrollado con:** Python 3.x + openpyxl
-**Licencia:** MIT
-**Versión Estable:** v4.0 (14/11/2025)
+**🎯 Sistema v4.0 listo para uso en producción (90% completo)**  
+**Última actualización:** 14 Noviembre 2025
