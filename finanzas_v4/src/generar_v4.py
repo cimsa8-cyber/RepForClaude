@@ -56,31 +56,55 @@ def aplicar_estilo_header(ws, fila, color_hex):
             cell.border = border
 
 def ajustar_anchos_columnas(ws, estructura):
-    """Ajusta el ancho de las columnas según el contenido"""
-    anchos = {
+    """
+    Ajusta el ancho de las columnas automáticamente según el contenido.
+
+    CRÍTICO: Como las hojas están protegidas, el usuario no puede ajustar
+    manualmente, por lo que debemos establecer anchos óptimos desde el inicio.
+    """
+    # Anchos mínimos por tipo de campo
+    anchos_minimos = {
         'Fecha': 12,
         'Tipo': 12,
         'Categoría': 15,
         'Subcategoría': 15,
         'Descripción': 35,
         'Entidad': 20,
-        'Cuenta': 18,
+        'Cuenta': 20,
         'Método Pago': 15,
         'Monto': 15,
-        'Referencia': 12,
+        'Referencia': 15,
         'Notas': 25,
-        'Estado': 12,
+        'Estado': 15,
         'IVA': 12,
         'Fecha Vencimiento': 18,
         'Número Factura': 15,
         'Cliente': 20,
-        'Días Pendientes': 15
+        'Días Pendientes': 17,
+        'Alias': 25,
+        'Entidad Real': 30
     }
 
     for nombre_campo, config in estructura.items():
         col_letra = config.get('col_letra') or get_column_letter(config['col'])
-        ancho = anchos.get(nombre_campo, 15)
-        ws.column_dimensions[col_letra].width = ancho
+        col_num = config['col']
+
+        # Calcular ancho basándose en el contenido actual
+        max_length = len(str(nombre_campo))  # Empezar con el largo del header
+
+        # Revisar el contenido de las celdas (primeras 100 filas)
+        for fila in range(1, min(ws.max_row + 1, 101)):
+            cell_value = ws.cell(fila, col_num).value
+            if cell_value:
+                cell_length = len(str(cell_value))
+                max_length = max(max_length, cell_length)
+
+        # Calcular ancho: contenido + margen, con mínimo definido
+        ancho_calculado = min(max_length + 2, 50)  # Máximo 50 para evitar columnas demasiado anchas
+        ancho_minimo = anchos_minimos.get(nombre_campo, 15)
+        ancho_final = max(ancho_calculado, ancho_minimo)
+
+        ws.column_dimensions[col_letra].width = ancho_final
 
 # ==============================================================================
 # CREACIÓN DE HOJA: TRANSACCIONES
