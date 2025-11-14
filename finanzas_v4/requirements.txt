@@ -1,0 +1,12 @@
+# ============================================
+# DEPENDENCIAS - Sistema de Finanzas v4.0
+# ============================================
+
+# Biblioteca principal para manipular archivos Excel
+openpyxl>=3.1.2
+
+# Opcional: Para análisis de datos (si se requiere en el futuro)
+# pandas>=2.0.0
+
+# Opcional: Para gráficos (si se requiere en el futuro)
+# matplotlib>=3.7.0
