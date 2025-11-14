@@ -22,12 +22,15 @@ from config import (
     ESTRUCTURA_TRANSACCIONES,
     ESTRUCTURA_CXP,
     ESTRUCTURA_CXC,
+    ESTRUCTURA_ENTIDADES_ALIAS,
     HOJAS_CONFIG,
     get_formula_cxp,
     get_formula_cxc,
     TRANSACCIONES_EJEMPLO,
     VERSION
 )
+
+import alias
 
 # ==============================================================================
 # ESTILO Y FORMATO
@@ -256,6 +259,49 @@ def crear_hoja_cxc(wb):
     return ws
 
 # ==============================================================================
+# CREACIÓN DE HOJA: ENTIDADES_ALIAS
+# ==============================================================================
+
+def crear_hoja_entidades_alias(wb):
+    """Crea la hoja de ENTIDADES_ALIAS con alias pre-cargados"""
+    print("📝 Creando hoja ENTIDADES_ALIAS...")
+
+    # Crear hoja
+    if 'ENTIDADES_ALIAS' in wb.sheetnames:
+        ws = wb['ENTIDADES_ALIAS']
+        ws.delete_rows(1, ws.max_row)
+    else:
+        ws = wb.create_sheet('ENTIDADES_ALIAS')
+
+    # Headers (fila 1)
+    for nombre_campo, config in ESTRUCTURA_ENTIDADES_ALIAS.items():
+        col = config['col']
+        ws.cell(1, col, nombre_campo)
+
+    # Aplicar estilo a headers
+    aplicar_estilo_header(ws, 1, HOJAS_CONFIG['ENTIDADES_ALIAS']['color_header'])
+
+    # Ajustar anchos de columna
+    ajustar_anchos_columnas(ws, ESTRUCTURA_ENTIDADES_ALIAS)
+
+    # Congelar primera fila
+    ws.freeze_panes = 'A2'
+
+    # Cargar alias pre-cargados de v3.0
+    print("  📊 Cargando alias pre-cargados de v3.0...")
+    fila_actual = 2
+    for alias_info in alias.ALIAS_PRECARGADOS_V3:
+        ws.cell(fila_actual, 1, alias_info['Alias'])
+        ws.cell(fila_actual, 2, alias_info['Entidad Real'])
+        ws.cell(fila_actual, 3, alias_info['Tipo'])
+        ws.cell(fila_actual, 4, alias_info['Notas'])
+        fila_actual += 1
+
+    cantidad_alias = len(alias.ALIAS_PRECARGADOS_V3)
+    print(f"  ✅ Hoja ENTIDADES_ALIAS creada con {cantidad_alias} alias")
+    return ws
+
+# ==============================================================================
 # CREACIÓN DE HOJA: RESUMEN
 # ==============================================================================
 
@@ -303,7 +349,7 @@ def crear_hoja_resumen(wb):
     ws['B16'] = VERSION
     ws['A17'] = 'Última actualización:'
     ws['B17'] = '=NOW()'
-    ws['B17'].number_format = 'DD/MM/YYYY HH:MM'
+    ws['B17'].number_format = 'DD/MM/YY HH:MM'
 
     # Ajustar anchos
     ws.column_dimensions['A'].width = 25
@@ -311,6 +357,51 @@ def crear_hoja_resumen(wb):
 
     print("  ✅ Hoja RESUMEN creada")
     return ws
+
+# ==============================================================================
+# PROTECCIÓN DE HOJAS
+# ==============================================================================
+
+def proteger_hojas(wb):
+    """
+    Protege todas las hojas excepto TRANSACCIONES.
+
+    REQUERIMIENTO DEL USUARIO:
+    - Usuario solo trabaja con la pestaña TRANSACCIONES
+    - Todas las demás pestañas deben estar bloqueadas y automatizadas
+
+    HOJAS PROTEGIDAS:
+    - CxP (solo fórmulas)
+    - CxC (solo fórmulas)
+    - ENTIDADES_ALIAS (gestionar vía alias.py)
+    - RESUMEN (solo fórmulas)
+
+    HOJA NO PROTEGIDA:
+    - TRANSACCIONES (única hoja editable)
+    """
+    print("\n🔒 Aplicando protección de hojas...")
+
+    for nombre_hoja in wb.sheetnames:
+        ws = wb[nombre_hoja]
+        config = HOJAS_CONFIG.get(nombre_hoja, {})
+        protegida = config.get('protegida', False)
+
+        if protegida:
+            # Proteger hoja (sin contraseña para facilidad de mantenimiento)
+            ws.protection.sheet = True
+            # No establecer contraseña (dejar sin password)
+            ws.protection.formatCells = False
+            ws.protection.formatColumns = False
+            ws.protection.formatRows = False
+            ws.protection.insertColumns = False
+            ws.protection.insertRows = False
+            ws.protection.deleteColumns = False
+            ws.protection.deleteRows = False
+            print(f"  🔒 {nombre_hoja}: PROTEGIDA (solo lectura)")
+        else:
+            print(f"  🔓 {nombre_hoja}: EDITABLE (usuario puede modificar)")
+
+    print("  ✅ Protección aplicada correctamente")
 
 # ==============================================================================
 # GENERACIÓN PRINCIPAL
@@ -347,7 +438,11 @@ def generar_excel_v4(nombre_archivo='AlvaroVelasco_Finanzas_v4.0.xlsx', incluir_
     crear_hoja_transacciones(wb, incluir_ejemplos)
     crear_hoja_cxp(wb)
     crear_hoja_cxc(wb)
+    crear_hoja_entidades_alias(wb)
     crear_hoja_resumen(wb)
+
+    # Proteger hojas (todas excepto TRANSACCIONES)
+    proteger_hojas(wb)
 
     # Activar hoja RESUMEN por defecto
     wb.active = wb['RESUMEN']
@@ -364,16 +459,22 @@ def generar_excel_v4(nombre_archivo='AlvaroVelasco_Finanzas_v4.0.xlsx', incluir_
 ║ Archivo creado: {nombre_archivo:<49} ║
 ║                                                                   ║
 ║ Hojas creadas:                                                    ║
-║  ✅ RESUMEN (Dashboard)                                            ║
-║  ✅ TRANSACCIONES (Registro completo)                              ║
-║  ✅ CxP (Cuentas por Pagar con fórmulas)                           ║
-║  ✅ CxC (Cuentas por Cobrar con fórmulas)                          ║
+║  ✅ RESUMEN (Dashboard) - 🔒 PROTEGIDA                             ║
+║  ✅ TRANSACCIONES (Registro completo) - 🔓 EDITABLE                ║
+║  ✅ CxP (Cuentas por Pagar con fórmulas) - 🔒 PROTEGIDA            ║
+║  ✅ CxC (Cuentas por Cobrar con fórmulas) - 🔒 PROTEGIDA           ║
+║  ✅ ENTIDADES_ALIAS ({len(alias.ALIAS_PRECARGADOS_V3)} alias de v3.0) - 🔒 PROTEGIDA         ║
+║                                                                   ║
+║ 🔐 PROTECCIÓN APLICADA:                                            ║
+║  - Solo TRANSACCIONES es editable por el usuario                  ║
+║  - Todas las demás hojas están protegidas (solo fórmulas)         ║
 ║                                                                   ║
 ║ Próximos pasos:                                                   ║
 ║  1. Abrir archivo en Excel                                        ║
 ║  2. Verificar que CxP muestra los pendientes                      ║
 ║  3. Verificar que CxC muestra los por cobrar                      ║
-║  4. Ejecutar auditoría: python auditoria.py {nombre_archivo:<23} ║
+║  4. Verificar alias en ENTIDADES_ALIAS                            ║
+║  5. Ejecutar auditoría: python auditoria.py {nombre_archivo:<23} ║
 ╚═══════════════════════════════════════════════════════════════════╝
     """)
 

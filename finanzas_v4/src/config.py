@@ -30,8 +30,8 @@ ESTRUCTURA_TRANSACCIONES = {
         'col': 1,
         'col_letra': 'A',
         'tipo': 'datetime',
-        'formato': 'DD/MM/YYYY',
-        'formato_openpyxl': 'DD/MM/YYYY',
+        'formato': 'DD/MM/YY',
+        'formato_openpyxl': 'DD/MM/YY',
         'requerido': True,
         'descripcion': 'Fecha de la transacción'
     },
@@ -114,7 +114,7 @@ ESTRUCTURA_TRANSACCIONES = {
         'col': 12,
         'col_letra': 'L',
         'tipo': 'string',
-        'valores_validos': ['PAGADO', 'PENDIENTE', 'POR COBRAR', 'CANCELADO', 'PARCIAL'],
+        'valores_validos': ['PAGADO', 'PENDIENTE', 'POR COBRAR', 'COBRADO', 'CANCELADO', 'PARCIAL'],
         'requerido': True,
         'descripcion': 'Estado de la transacción (CRÍTICO para CxP/CxC)'
     },
@@ -131,8 +131,8 @@ ESTRUCTURA_TRANSACCIONES = {
         'col': 14,
         'col_letra': 'N',
         'tipo': 'datetime',
-        'formato': 'DD/MM/YYYY',
-        'formato_openpyxl': 'DD/MM/YYYY',
+        'formato': 'DD/MM/YY',
+        'formato_openpyxl': 'DD/MM/YY',
         'requerido': False,
         'descripcion': 'Fecha de vencimiento para CxP/CxC'
     },
@@ -176,6 +176,42 @@ ESTRUCTURA_CXC = {
 }
 
 # ==============================================================================
+# ESTRUCTURA DE HOJA: ENTIDADES_ALIAS
+# ==============================================================================
+
+ESTRUCTURA_ENTIDADES_ALIAS = {
+    'Alias': {
+        'col': 1,
+        'col_letra': 'A',
+        'tipo': 'string',
+        'requerido': True,
+        'descripcion': 'Alias enmascarado (ej: XXXXXXXXXX1066X)'
+    },
+    'Entidad Real': {
+        'col': 2,
+        'col_letra': 'B',
+        'tipo': 'string',
+        'requerido': True,
+        'descripcion': 'Nombre real de la entidad'
+    },
+    'Tipo': {
+        'col': 3,
+        'col_letra': 'C',
+        'tipo': 'string',
+        'valores_validos': ['Cuenta', 'Tarjeta', 'Proveedor', 'Cliente', 'Otro'],
+        'requerido': True,
+        'descripcion': 'Tipo de entidad'
+    },
+    'Notas': {
+        'col': 4,
+        'col_letra': 'D',
+        'tipo': 'string',
+        'requerido': False,
+        'descripcion': 'Notas adicionales'
+    }
+}
+
+# ==============================================================================
 # CONFIGURACIÓN DE HOJAS
 # ==============================================================================
 
@@ -184,7 +220,7 @@ HOJAS_CONFIG = {
         'estructura': ESTRUCTURA_TRANSACCIONES,
         'fila_inicio_datos': 2,
         'color_header': 'FF4472C4',  # Azul
-        'protegida': False,
+        'protegida': False,  # ÚNICA hoja editable por el usuario
         'descripcion': 'Registro completo de transacciones'
     },
     'CxP': {
@@ -201,11 +237,18 @@ HOJAS_CONFIG = {
         'protegida': True,
         'descripcion': 'Cuentas por cobrar (Estado = POR COBRAR)'
     },
+    'ENTIDADES_ALIAS': {
+        'estructura': ESTRUCTURA_ENTIDADES_ALIAS,
+        'fila_inicio_datos': 2,
+        'color_header': 'FFFFC000',  # Naranja
+        'protegida': True,  # Protegida, gestionar via módulo alias.py
+        'descripcion': 'Mapeo de alias enmascarados a nombres reales'
+    },
     'RESUMEN': {
         'estructura': {},  # Dashboard, estructura libre
         'fila_inicio_datos': 1,
         'color_header': 'FF7030A0',  # Morado
-        'protegida': False,
+        'protegida': True,  # Protegida, solo fórmulas
         'descripcion': 'Dashboard con métricas y gráficos'
     }
 }
@@ -272,7 +315,7 @@ def get_formula_cxc(fila_cxc, max_fila_trans):
 
 VALIDACIONES = {
     'tipo_transaccion': ['INGRESO', 'EGRESO', 'TRANSFERENCIA'],
-    'estado_transaccion': ['PAGADO', 'PENDIENTE', 'POR COBRAR', 'CANCELADO', 'PARCIAL'],
+    'estado_transaccion': ['PAGADO', 'PENDIENTE', 'POR COBRAR', 'COBRADO', 'CANCELADO', 'PARCIAL'],
     'metodo_pago': ['Transferencia', 'Efectivo', 'Tarjeta', 'Cheque', 'SINPE', 'Otro'],
     'categorias': ['Operaciones', 'Proyectos', 'Administrativo', 'Ventas', 'Otros']
 }
