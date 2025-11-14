@@ -1,11 +1,42 @@
-# Archivos Excel
+# ==========================================
+# POLÍTICA DE SEGURIDAD DE DATOS SENSIBLES
+# ==========================================
+# CRÍTICO: Este proyecto maneja información financiera personal
+# NUNCA commitear datos reales de cuentas bancarias, saldos, o transacciones
+
+# ============================================
+# ARCHIVOS CON DATOS SENSIBLES (ALTA PRIORIDAD)
+# ============================================
+
+# Archivos Excel con datos reales
 *.xlsx
 *.xls
 *.xlsm
+*.xlsb
 
-# Archivos de respaldo
-finanzas_v4/backups/
-finanzas_v4/logs/
+# Scripts de Python con datos reales
+*_con_saldos.py
+*_datos_reales.py
+*_produccion.py
+generar_con_saldos.py
+
+# Archivos de respaldo que pueden contener datos sensibles
+*.backup
+*.bak
+*_backup.*
+backups/
+
+# Archivos de configuración con credenciales
+.env
+.env.local
+.env.production
+config_local.py
+secrets.py
+credenciales.py
+
+# ============================================
+# ARCHIVOS TEMPORALES Y DE SISTEMA
+# ============================================
 
 # Python
 __pycache__/
@@ -13,9 +44,6 @@ __pycache__/
 *$py.class
 *.so
 .Python
-env/
-venv/
-ENV/
 build/
 develop-eggs/
 dist/
@@ -31,18 +59,60 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+MANIFEST
+venv/
+env/
+ENV/
 
-# IDEs
-.vscode/
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# PyCharm
 .idea/
-*.swp
-*.swo
-*~
 
-# OS
+# VS Code
+.vscode/
+
+# macOS
 .DS_Store
-Thumbs.db
+.AppleDouble
+.LSOverride
 
-# Tests
-finanzas_v4/tests/*.xlsx
-ejemplo_finanzas_*.xlsx
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Logs y caché
+*.log
+*.cache
+logs/
+*.sqlite
+*.db
+
+# ============================================
+# ARCHIVOS DE PRUEBA CON DATOS DE EJEMPLO
+# ============================================
+# Nota: Los archivos TEST.xlsx con datos ficticios
+# también se ignoran por seguridad (usar patron *.xlsx)
+
+# ============================================
+# EXCEPCIONES (archivos que SÍ se deben commitear)
+# ============================================
+# Si necesitas versionar algún archivo Excel de ejemplo
+# con datos FICTICIOS, crea una excepción específica:
+# !ejemplo_estructura.xlsx
+
+# ============================================
+# BUENAS PRÁCTICAS
+# ============================================
+# 1. SIEMPRE revisar con 'git status' antes de commit
+# 2. NUNCA usar 'git add .' sin verificar qué archivos se agregarán
+# 3. Usar 'git add <archivo específico>' para control preciso
+# 4. Revisar 'git diff --cached' antes de hacer commit
+# 5. Si accidentalmente se commitea data sensible:
+#    - NO hacer push
+#    - Usar 'git reset HEAD~1' para deshacer commit
+#    - Limpiar el archivo del staging con 'git restore --staged <archivo>'

@@ -261,6 +261,184 @@ def insertar_transaccion(archivo, datos):
 
 ---
 
+### ❌ ERROR CRÍTICO #6: Datos Sensibles en Repositorio Público
+
+**Lo que PUEDE SALIR MAL:**
+```bash
+# ❌ PELIGRO: Sin .gitignore, commitear datos sensibles
+git add .
+git commit -m "Agregar sistema de finanzas"
+git push  # ← DATOS BANCARIOS AHORA PÚBLICOS EN GITHUB
+
+# RESULTADO: Información financiera personal expuesta:
+# - Números de cuenta (aunque parcialmente enmascarados)
+# - Saldos bancarios reales
+# - Deudas de tarjetas de crédito
+# - Transacciones personales
+# - Historial financiero completo
+```
+
+**CONSECUENCIAS:**
+- 🔴 Exposición de información financiera personal
+- 🔴 Violación de privacidad
+- 🔴 Riesgo de fraude o robo de identidad
+- 🔴 Datos permanecen en historial de Git (difícil de eliminar)
+
+**✅ SOLUCIÓN CORRECTA para v4.0:**
+
+**1. Crear .gitignore ANTES del primer commit:**
+```bash
+# .gitignore
+# ==========================================
+# POLÍTICA DE SEGURIDAD DE DATOS SENSIBLES
+# ==========================================
+
+# Archivos Excel con datos reales (CRÍTICO)
+*.xlsx
+*.xls
+*.xlsm
+
+# Scripts con datos reales (CRÍTICO)
+*_con_saldos.py
+*_datos_reales.py
+*_produccion.py
+generar_con_saldos.py
+
+# Archivos de respaldo
+*.backup
+*.bak
+
+# Configuración con credenciales
+.env
+.env.local
+config_local.py
+secrets.py
+credenciales.py
+```
+
+**2. Separar datos de ejemplo vs datos reales:**
+```python
+# ✅ PERMITIDO EN GIT: generar_v4.py (datos ficticios)
+def crear_ejemplo():
+    """Crea Excel con datos de EJEMPLO (no reales)"""
+    transacciones_ejemplo = [
+        {
+            'Fecha': '01/11/25',
+            'Tipo': 'INGRESO',
+            'Monto': 500000,  # ← Dato ficticio
+            'Cuenta': 'Ejemplo Banco 1'  # ← No es cuenta real
+        }
+    ]
+
+# ❌ PROHIBIDO EN GIT: generar_con_saldos.py (datos reales)
+def cargar_saldos_reales():
+    """Carga saldos REALES de cuentas bancarias"""
+    # ESTE ARCHIVO DEBE ESTAR EN .gitignore
+    saldos = [
+        {'Cuenta': 'BNCR Ahorros (***8618)', 'Monto': 35563.24},  # ← REAL
+        {'Cuenta': 'Visa Platino (***9837)', 'Monto': -2086984.01}  # ← REAL
+    ]
+```
+
+**3. Verificar ANTES de cada commit:**
+```bash
+# ✅ CHECKLIST PRE-COMMIT
+# 1. Ver qué archivos se agregarán
+git status
+
+# 2. Verificar que NO aparezcan:
+#    - *.xlsx (archivos Excel)
+#    - *_con_saldos.py (scripts con datos reales)
+#    - Archivos con información sensible
+
+# 3. Si aparecen, DETENER y revisar .gitignore
+git add <archivo_específico>  # ← Usar nombres específicos, NO "git add ."
+
+# 4. Revisar cambios antes de commit
+git diff --cached
+
+# 5. Commit solo si NO hay datos sensibles
+git commit -m "✨ Implementar funcionalidad X"
+```
+
+**4. Si accidentalmente se commitea data sensible:**
+```bash
+# ⚠️ ANTES DE HACER PUSH
+# Si NO has hecho push todavía, deshacer commit:
+git reset HEAD~1
+
+# Quitar archivo del staging
+git restore --staged archivo_sensible.xlsx
+
+# Agregar al .gitignore
+echo "archivo_sensible.xlsx" >> .gitignore
+
+# Recommitear sin el archivo sensible
+git add <archivos_seguros>
+git commit -m "✨ Implementar funcionalidad X"
+
+# ⚠️ SI YA HICISTE PUSH
+# Contactar soporte de GitHub para eliminar datos sensibles del historial
+# (Proceso complejo, mejor prevenir)
+```
+
+**REGLAS DE SEGURIDAD:**
+
+1. ✅ **SIEMPRE** crear `.gitignore` ANTES del primer commit
+2. ✅ **NUNCA** usar `git add .` (usar archivos específicos)
+3. ✅ **SIEMPRE** revisar `git status` antes de commit
+4. ✅ **SEPARAR** código (versionable) de datos (no versionable)
+5. ✅ **MANTENER** datos reales en directorio local (NO en repo)
+6. ✅ **USAR** variables de entorno para credenciales
+7. ✅ **VERIFICAR** `git diff --cached` antes de commit
+
+**ESTRUCTURA RECOMENDADA:**
+```
+finanzas_v4/
+├── src/                    # ✅ En Git (código)
+│   ├── config.py          # ✅ Estructura, NO datos
+│   ├── generar_v4.py      # ✅ Genera con datos EJEMPLO
+│   └── operaciones.py     # ✅ Lógica, NO datos
+├── docs/                   # ✅ En Git (documentación)
+│   └── GUIA_USO.md        # ✅ Sin datos sensibles
+├── local_data/             # ❌ NO en Git (en .gitignore)
+│   ├── generar_con_saldos.py      # ← Datos REALES
+│   └── AlvaroVelasco_Finanzas.xlsx # ← Datos REALES
+└── .gitignore             # ✅ CRÍTICO: Crear primero
+```
+
+**EJEMPLO DE USO SEGURO:**
+```python
+# config.py (✅ en Git - solo estructura)
+ESTRUCTURA_TRANSACCIONES = {
+    'Fecha': {'col': 1, 'formato': 'DD/MM/YY'},
+    'Monto': {'col': 9, 'formato': '₡#,##0.00'}
+    # Solo define estructura, NO contiene datos reales
+}
+
+# local_data/mis_saldos.py (❌ NO en Git - datos reales)
+# Este archivo está en .gitignore
+SALDOS_REALES = [
+    {'Cuenta': 'BNCR Ahorros (***8618)', 'Monto': 35563.24},
+    # ... datos reales aquí
+]
+
+# Script que usa datos (✅ en Git - importa desde local)
+from local_data.mis_saldos import SALDOS_REALES  # ← Importar NO commitear
+```
+
+**CHECKLIST DE SEGURIDAD:**
+- [ ] ✅ `.gitignore` creado con patrones de datos sensibles
+- [ ] ✅ Archivos Excel en `.gitignore` (`*.xlsx`)
+- [ ] ✅ Scripts con datos reales en `.gitignore` (`*_con_saldos.py`)
+- [ ] ✅ `git status` no muestra archivos sensibles
+- [ ] ✅ `git diff --cached` revisado antes de commit
+- [ ] ✅ Usar `git add <archivo>` (NO `git add .`)
+- [ ] ✅ Datos reales en directorio `local_data/` (ignorado)
+- [ ] ✅ Código separado de datos
+
+---
+
 ## 🎓 NUEVAS MEJORES PRÁCTICAS (Basadas en v3.0)
 
 ### 1. Script de Diagnóstico PRIMERO
@@ -622,6 +800,7 @@ wb = openpyxl.load_workbook('TEST.xlsx')
 | **Pruebas** | ❌ Directo a producción | ✅ Archivo TEST |
 | **Estructura** | ❌ Asumida | ✅ Definida en config.py |
 | **Diagnóstico** | ❌ Después de fallar | ✅ Antes de implementar |
+| **Seguridad Datos** | ❌ Sin .gitignore | ✅ .gitignore + separación datos |
 
 ---
 
@@ -637,6 +816,7 @@ wb = openpyxl.load_workbook('TEST.xlsx')
 6. ✅ **Pruebas en TEST** (no directo a producción)
 7. ✅ **Mapeo dinámico** (no hardcodear)
 8. ✅ **Auditoría post-operación** (verificar que funciona)
+9. ✅ **Seguridad de datos** (.gitignore + separación código/datos)
 
 **Resultado esperado:**
 - 🎯 0 errores de columnas desalineadas
