@@ -487,7 +487,7 @@ def generar_excel_v4(nombre_archivo='AlvaroVelasco_Finanzas_v4.0.xlsx', incluir_
 ║  ✅ TRANSACCIONES (Registro completo) - 🔓 EDITABLE                ║
 ║  ✅ CxP (Cuentas por Pagar con fórmulas) - 🔒 PROTEGIDA            ║
 ║  ✅ CxC (Cuentas por Cobrar con fórmulas) - 🔒 PROTEGIDA           ║
-║  ✅ ENTIDADES_ALIAS ({len(alias.ALIAS_PRECARGADOS_V3)} alias de v3.0) - 🔒 PROTEGIDA         ║
+║  ✅ ENTIDADES_ALIAS ({len(alias.ALIAS_PRECARGADOS_V3)} alias pre-cargados) - 🔒 PROTEGIDA    ║
 ║                                                                   ║
 ║ 🔐 PROTECCIÓN APLICADA:                                            ║
 ║  - Solo TRANSACCIONES es editable por el usuario                  ║

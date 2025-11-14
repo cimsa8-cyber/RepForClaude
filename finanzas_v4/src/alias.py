@@ -7,7 +7,7 @@ Gestiona el sistema de alias para cuentas bancarias enmascaradas.
 
 FUNCIONALIDAD RESCATADA DE v3.0:
 - 48 alias registrados en v3.0
-- 11 alias de cuentas bancarias
+- 12 alias pre-cargados en v4.0 (7 BNCR + 4 tarjetas + 1 proveedor)
 - 7 alias BNCR (2 enmascarados)
 - Mapeo automático de cuentas enmascaradas (XXXXXXXXXX1066X → BNCR CC Colones)
 
@@ -102,6 +102,13 @@ ALIAS_PRECARGADOS_V3 = [
         'Entidad Real': 'Instituto Costarricense de Electricidad - Kolbi',
         'Tipo': 'Proveedor',
         'Notas': 'Servicios de telecomunicaciones móviles'
+    },
+    # Tarjeta Credomatic
+    {
+        'Alias': 'Credomatic',
+        'Entidad Real': 'Tarjeta Credomatic',
+        'Tipo': 'Tarjeta',
+        'Notas': 'Tarjeta de crédito Credomatic - Pago: 15/11/2025'
     }
 ]
 
