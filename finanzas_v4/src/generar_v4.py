@@ -31,6 +31,9 @@ from config import (
 )
 
 import alias
+from estados_financieros import agregar_estados_financieros
+from graficas import agregar_graficas
+from conciliacion import agregar_conciliacion
 
 # ==============================================================================
 # ESTILO Y FORMATO
@@ -465,6 +468,13 @@ def generar_excel_v4(nombre_archivo='AlvaroVelasco_Finanzas_v4.0.xlsx', incluir_
     crear_hoja_entidades_alias(wb)
     crear_hoja_resumen(wb)
 
+    # ══════════════════════════════════════════════════════════════════════════
+    # NUEVAS HOJAS v4.0 COMPLETO (95% → 100%)
+    # ══════════════════════════════════════════════════════════════════════════
+    agregar_estados_financieros(wb)  # P&L, Balance, Flujo Caja
+    agregar_graficas(wb)              # Dashboard Visual con KPIs
+    agregar_conciliacion(wb)          # Conciliación Bancaria
+
     # Proteger hojas (todas excepto TRANSACCIONES)
     proteger_hojas(wb)
 
@@ -478,27 +488,36 @@ def generar_excel_v4(nombre_archivo='AlvaroVelasco_Finanzas_v4.0.xlsx', incluir_
 
     print(f"""
 ╔═══════════════════════════════════════════════════════════════════╗
-║           ✅ ARCHIVO EXCEL v4.0 GENERADO EXITOSAMENTE              ║
+║        ✅ ARCHIVO EXCEL v4.0 COMPLETO (100%) GENERADO              ║
 ╠═══════════════════════════════════════════════════════════════════╣
 ║ Archivo creado: {nombre_archivo:<49} ║
 ║                                                                   ║
-║ Hojas creadas:                                                    ║
+║ 📊 HOJAS BASE:                                                     ║
 ║  ✅ RESUMEN (Dashboard) - 🔒 PROTEGIDA                             ║
 ║  ✅ TRANSACCIONES (Registro completo) - 🔓 EDITABLE                ║
-║  ✅ CxP (Cuentas por Pagar con fórmulas) - 🔒 PROTEGIDA            ║
-║  ✅ CxC (Cuentas por Cobrar con fórmulas) - 🔒 PROTEGIDA           ║
-║  ✅ ENTIDADES_ALIAS ({len(alias.ALIAS_PRECARGADOS_V3)} alias pre-cargados) - 🔒 PROTEGIDA    ║
+║  ✅ CxP (Cuentas por Pagar) - 🔒 PROTEGIDA                         ║
+║  ✅ CxC (Cuentas por Cobrar) - 🔒 PROTEGIDA                        ║
+║  ✅ ENTIDADES_ALIAS ({len(alias.ALIAS_PRECARGADOS_V3)} alias) - 🔒 PROTEGIDA              ║
+║                                                                   ║
+║ 📈 ESTADOS FINANCIEROS (NUEVO):                                    ║
+║  ✅ ESTADO_RESULTADOS (P&L) - 🔒 PROTEGIDA                         ║
+║  ✅ BALANCE_GENERAL - 🔒 PROTEGIDA                                 ║
+║  ✅ FLUJO_CAJA - 🔒 PROTEGIDA                                      ║
+║                                                                   ║
+║ 📊 ANÁLISIS Y REPORTES (NUEVO):                                    ║
+║  ✅ DASHBOARD_VISUAL (KPIs + Gráficas) - 🔒 PROTEGIDA              ║
+║  ✅ CONCILIACION (Bancaria) - 🔒 PROTEGIDA                         ║
 ║                                                                   ║
 ║ 🔐 PROTECCIÓN APLICADA:                                            ║
 ║  - Solo TRANSACCIONES es editable por el usuario                  ║
-║  - Todas las demás hojas están protegidas (solo fórmulas)         ║
+║  - Todas las demás hojas están protegidas (fórmulas automáticas)  ║
 ║                                                                   ║
-║ Próximos pasos:                                                   ║
-║  1. Abrir archivo en Excel                                        ║
-║  2. Verificar que CxP muestra los pendientes                      ║
-║  3. Verificar que CxC muestra los por cobrar                      ║
-║  4. Verificar alias en ENTIDADES_ALIAS                            ║
-║  5. Ejecutar auditoría: python auditoria.py {nombre_archivo:<23} ║
+║ 🎯 SISTEMA COMPLETO AL 100%:                                       ║
+║  ✅ Gestión de transacciones                                       ║
+║  ✅ CxP/CxC automático (incluye tarjetas)                          ║
+║  ✅ Estados Financieros                                            ║
+║  ✅ Dashboard con KPIs                                             ║
+║  ✅ Conciliación Bancaria                                          ║
 ╚═══════════════════════════════════════════════════════════════════╝
     """)
 
