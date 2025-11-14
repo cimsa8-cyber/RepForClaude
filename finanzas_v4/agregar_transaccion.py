@@ -24,8 +24,8 @@ sys.path.insert(0, str(Path(__file__).parent / 'src'))
 
 from operaciones import insertar_transaccion
 
-# Archivo de producción
-ARCHIVO_EXCEL = Path(__file__).parent / "AlvaroVelasco_Finanzas_v4.0.xlsx"
+# Archivo de producción (en raíz del proyecto)
+ARCHIVO_EXCEL = Path(__file__).parent.parent / "AlvaroVelasco_Finanzas_v4.0.xlsx"
 
 # Plantillas rápidas para operaciones comunes
 PLANTILLAS = {
