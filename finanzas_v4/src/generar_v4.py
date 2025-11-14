@@ -34,6 +34,10 @@ import alias
 from estados_financieros import agregar_estados_financieros
 from graficas import agregar_graficas
 from conciliacion import agregar_conciliacion
+from hoja_config import crear_hoja_config
+from iva_control import crear_hoja_iva_control
+from presupuesto import crear_hoja_presupuesto
+from personal_vs_negocio import crear_hoja_personal_vs_negocio
 
 # ==============================================================================
 # ESTILO Y FORMATO
@@ -391,29 +395,35 @@ def crear_hoja_resumen(wb):
 
 def proteger_hojas(wb):
     """
-    Protege todas las hojas excepto TRANSACCIONES.
+    Protege todas las hojas excepto TRANSACCIONES y CONFIG.
 
     REQUERIMIENTO DEL USUARIO:
-    - Usuario solo trabaja con la pestaña TRANSACCIONES
-    - Todas las demás pestañas deben estar bloqueadas y automatizadas
+    - Usuario trabaja principalmente con TRANSACCIONES
+    - CONFIG es editable para actualizar TC y fechas de tarjetas
+    - Todas las demás pestañas están bloqueadas y automatizadas
 
-    HOJAS PROTEGIDAS:
-    - CxP (solo fórmulas)
-    - CxC (solo fórmulas)
-    - ENTIDADES_ALIAS (gestionar vía alias.py)
-    - RESUMEN (solo fórmulas)
+    HOJAS NO PROTEGIDAS (EDITABLES):
+    - TRANSACCIONES (principal para ingresar datos)
+    - CONFIG (editar TC, fechas de pago TC)
 
-    HOJA NO PROTEGIDA:
-    - TRANSACCIONES (única hoja editable)
+    HOJAS PROTEGIDAS (SOLO FÓRMULAS):
+    - CxP, CxC, RESUMEN, ENTIDADES_ALIAS
+    - Estados Financieros (P&L, Balance, Flujo Caja)
+    - Análisis (Dashboard, Conciliación)
+    - Control (IVA, Presupuesto, Personal vs Negocio)
     """
     print("\n🔒 Aplicando protección de hojas...")
 
+    # Hojas que NO deben protegerse (editables por el usuario)
+    hojas_editables = {'TRANSACCIONES', 'CONFIG'}
+
     for nombre_hoja in wb.sheetnames:
         ws = wb[nombre_hoja]
-        config = HOJAS_CONFIG.get(nombre_hoja, {})
-        protegida = config.get('protegida', False)
 
-        if protegida:
+        # Determinar si debe protegerse
+        if nombre_hoja in hojas_editables:
+            print(f"  🔓 {nombre_hoja}: EDITABLE (usuario puede modificar)")
+        else:
             # Proteger hoja (sin contraseña para facilidad de mantenimiento)
             ws.protection.sheet = True
             # No establecer contraseña (dejar sin password)
@@ -425,8 +435,6 @@ def proteger_hojas(wb):
             ws.protection.deleteColumns = False
             ws.protection.deleteRows = False
             print(f"  🔒 {nombre_hoja}: PROTEGIDA (solo lectura)")
-        else:
-            print(f"  🔓 {nombre_hoja}: EDITABLE (usuario puede modificar)")
 
     print("  ✅ Protección aplicada correctamente")
 
@@ -469,13 +477,21 @@ def generar_excel_v4(nombre_archivo='AlvaroVelasco_Finanzas_v4.0.xlsx', incluir_
     crear_hoja_resumen(wb)
 
     # ══════════════════════════════════════════════════════════════════════════
-    # NUEVAS HOJAS v4.0 COMPLETO (95% → 100%)
+    # HOJAS v4.0 COMPLETO (100%) - SISTEMA TOTAL
     # ══════════════════════════════════════════════════════════════════════════
+
+    # Hojas de estados financieros
     agregar_estados_financieros(wb)  # P&L, Balance, Flujo Caja
     agregar_graficas(wb)              # Dashboard Visual con KPIs
     agregar_conciliacion(wb)          # Conciliación Bancaria
 
-    # Proteger hojas (todas excepto TRANSACCIONES)
+    # Hojas de control y configuración (NUEVAS - v4.0 FINAL)
+    crear_hoja_config(wb)             # CONFIG - Tipo cambio, fechas TC (EDITABLE)
+    crear_hoja_iva_control(wb)        # IVA - Control fiscal (VWR/RS Hughes exentos)
+    crear_hoja_presupuesto(wb)        # PRESUPUESTO - Presupuesto vs Real
+    crear_hoja_personal_vs_negocio(wb)  # PERSONAL vs NEGOCIO - Saneamiento
+
+    # Proteger hojas (todas excepto TRANSACCIONES y CONFIG)
     proteger_hojas(wb)
 
     # Activar hoja RESUMEN por defecto
@@ -488,36 +504,44 @@ def generar_excel_v4(nombre_archivo='AlvaroVelasco_Finanzas_v4.0.xlsx', incluir_
 
     print(f"""
 ╔═══════════════════════════════════════════════════════════════════╗
-║        ✅ ARCHIVO EXCEL v4.0 COMPLETO (100%) GENERADO              ║
+║        ✅ ARCHIVO EXCEL v4.0 FINAL - 100% COMPLETO                 ║
 ╠═══════════════════════════════════════════════════════════════════╣
-║ Archivo creado: {nombre_archivo:<49} ║
+║ Archivo: {nombre_archivo:<56} ║
+║ Total de hojas: 14                                                ║
 ║                                                                   ║
-║ 📊 HOJAS BASE:                                                     ║
+║ 📊 HOJAS BASE (5):                                                 ║
 ║  ✅ RESUMEN (Dashboard) - 🔒 PROTEGIDA                             ║
-║  ✅ TRANSACCIONES (Registro completo) - 🔓 EDITABLE                ║
+║  ✅ TRANSACCIONES (Registro) - 🔓 EDITABLE                         ║
 ║  ✅ CxP (Cuentas por Pagar) - 🔒 PROTEGIDA                         ║
 ║  ✅ CxC (Cuentas por Cobrar) - 🔒 PROTEGIDA                        ║
 ║  ✅ ENTIDADES_ALIAS ({len(alias.ALIAS_PRECARGADOS_V3)} alias) - 🔒 PROTEGIDA              ║
 ║                                                                   ║
-║ 📈 ESTADOS FINANCIEROS (NUEVO):                                    ║
+║ 📈 ESTADOS FINANCIEROS (3):                                        ║
 ║  ✅ ESTADO_RESULTADOS (P&L) - 🔒 PROTEGIDA                         ║
 ║  ✅ BALANCE_GENERAL - 🔒 PROTEGIDA                                 ║
 ║  ✅ FLUJO_CAJA - 🔒 PROTEGIDA                                      ║
 ║                                                                   ║
-║ 📊 ANÁLISIS Y REPORTES (NUEVO):                                    ║
-║  ✅ DASHBOARD_VISUAL (KPIs + Gráficas) - 🔒 PROTEGIDA              ║
+║ 📊 ANÁLISIS Y DASHBOARDS (2):                                      ║
+║  ✅ DASHBOARD_VISUAL (KPIs) - 🔒 PROTEGIDA                         ║
 ║  ✅ CONCILIACION (Bancaria) - 🔒 PROTEGIDA                         ║
 ║                                                                   ║
-║ 🔐 PROTECCIÓN APLICADA:                                            ║
-║  - Solo TRANSACCIONES es editable por el usuario                  ║
-║  - Todas las demás hojas están protegidas (fórmulas automáticas)  ║
+║ ⚙️ CONTROL Y CONFIGURACIÓN (4):                                    ║
+║  ✅ CONFIG (TC + Fechas TC) - 🔓 EDITABLE                          ║
+║  ✅ IVA_CONTROL (Fiscal) - 🔒 PROTEGIDA                            ║
+║  ✅ PRESUPUESTO (vs Real) - 🔒 PROTEGIDA                           ║
+║  ✅ PERSONAL_VS_NEGOCIO - 🔒 PROTEGIDA                             ║
 ║                                                                   ║
-║ 🎯 SISTEMA COMPLETO AL 100%:                                       ║
-║  ✅ Gestión de transacciones                                       ║
-║  ✅ CxP/CxC automático (incluye tarjetas)                          ║
-║  ✅ Estados Financieros                                            ║
-║  ✅ Dashboard con KPIs                                             ║
-║  ✅ Conciliación Bancaria                                          ║
+║ 🔐 HOJAS EDITABLES: TRANSACCIONES + CONFIG                         ║
+║ 🔒 Hojas protegidas: 12 (auto-calculadas)                         ║
+║                                                                   ║
+║ 🎯 FUNCIONALIDADES:                                                ║
+║  ✅ Gestión completa de transacciones (columna P: Personal/Negocio)║
+║  ✅ CxP/CxC automático (incluye 8 tarjetas de crédito)            ║
+║  ✅ Estados Financieros completos                                  ║
+║  ✅ Control IVA (exención VWR/RS Hughes)                           ║
+║  ✅ Presupuesto vs Real por categoría                              ║
+║  ✅ Separación Personal vs Negocio (saneamiento)                   ║
+║  ✅ TC editable en CONFIG                                          ║
 ╚═══════════════════════════════════════════════════════════════════╝
     """)
 

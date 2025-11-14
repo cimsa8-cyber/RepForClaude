@@ -142,6 +142,14 @@ ESTRUCTURA_TRANSACCIONES = {
         'tipo': 'string',
         'requerido': False,
         'descripcion': 'Número de factura'
+    },
+    'Personal/Negocio': {
+        'col': 16,
+        'col_letra': 'P',
+        'tipo': 'string',
+        'valores_validos': ['Negocio', 'Personal'],
+        'requerido': True,
+        'descripcion': 'Clasificación para separar gastos personales de negocio'
     }
 }
 
@@ -425,7 +433,8 @@ TRANSACCIONES_EJEMPLO = [
         'Estado': 'PAGADO',
         'IVA': 0,
         'Fecha Vencimiento': '',
-        'Número Factura': ''
+        'Número Factura': '',
+        'Personal/Negocio': 'Negocio'
     },
     {
         'Fecha': '05/11/2025',
@@ -442,7 +451,8 @@ TRANSACCIONES_EJEMPLO = [
         'Estado': 'PENDIENTE',
         'IVA': 19500,
         'Fecha Vencimiento': '20/11/2025',
-        'Número Factura': 'FAC-2025-001'
+        'Número Factura': 'FAC-2025-001',
+        'Personal/Negocio': 'Negocio'
     },
     {
         'Fecha': '10/11/2025',
@@ -459,7 +469,8 @@ TRANSACCIONES_EJEMPLO = [
         'Estado': 'POR COBRAR',
         'IVA': 39000,
         'Fecha Vencimiento': '25/11/2025',
-        'Número Factura': 'INV-2025-001'
+        'Número Factura': 'INV-2025-001',
+        'Personal/Negocio': 'Negocio'
     }
 ]
 
