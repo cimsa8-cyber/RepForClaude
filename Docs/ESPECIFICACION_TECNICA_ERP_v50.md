@@ -166,49 +166,52 @@ Fila 2: Headers (17 columnas)
 
 ### Dropdowns (Data Validation)
 
-#### Categoría (C3:C1000)
+#### Categoría (C3:C1000) - ESPAÑOL
 ```
-Income, Expense, Inventory, Services, CxP, CxC, Marketing, Personal
+Ingreso, Gasto, Inventario, Servicios, CxP, CxC, Marketing, Personal
 ```
 
-#### Moneda (E3:E1000)
+#### Moneda (E3:E1000) - ESPAÑOL
 ```
 USD, CRC
 ```
+**Nota:** USD y CRC son códigos internacionales, se mantienen.
 
-#### Forma Pago (H3:H1000)
+#### Forma Pago (H3:H1000) - ESPAÑOL
 ```
-Cash, Transfer, Credit Card, Check, SINPE, PayPal
-```
-
-#### IVA (I3:I1000)
-```
-Yes, No
+Efectivo, Transferencia, Tarjeta Crédito, Cheque, SINPE, PayPal
 ```
 
-#### Recurrente (K3:K1000)
+#### IVA (I3:I1000) - ESPAÑOL
 ```
-Yes, No
-```
-
-#### Estado (M3:M1000)
-```
-Paid, Pending, Collected, Canceled
+Sí, No
 ```
 
-#### Personal/Negocio (P3:P1000)
+#### Recurrente (K3:K1000) - ESPAÑOL
 ```
-Personal, Business
+Sí, No
+```
+
+#### Estado (M3:M1000) - ESPAÑOL
+```
+Pagado, Pendiente, Cobrado, Cancelado
+```
+
+#### Personal/Negocio (P3:P1000) - ESPAÑOL
+```
+Personal, Negocio
 ```
 
 ### Datos Pre-cargados (Filas 3-6)
 
 | Fila | Fecha | Entidad | Cat | SubCat | Mon | Monto | Desc | Pago | IVA | Notas | Rec | Proy | Estado | Fact | Tag | P/N |
 |------|-------|---------|-----|--------|-----|-------|------|------|-----|-------|-----|------|--------|------|-----|-----|
-| 3 | HOY | BAC San José | CxP | Tarjeta Crédito | CRC | 1831000 | Saldo tarjeta Visa Clásica | Credit Card | No | Pre-cargado - Corte día 15 | No | | Pending | | Deuda Inicial | Business |
-| 4 | HOY | BCR | CxP | Tarjeta Crédito | CRC | 1750000 | Saldo tarjeta Mastercard | Credit Card | No | Pre-cargado - Corte día 20 | No | | Pending | | Deuda Inicial | Business |
-| 5 | HOY | Credomatic | CxP | Tarjeta Crédito | USD | 2500 | Saldo tarjeta Platinum | Credit Card | No | Pre-cargado - Corte día 10 | No | | Pending | | Deuda Inicial | Business |
-| 6 | HOY | Credomatic | CxP | Tarjeta Crédito | CRC | 2800000 | Saldo tarjeta Gold | Credit Card | No | Pre-cargado - Corte día 10 | No | | Pending | | Deuda Inicial | Business |
+| 3 | HOY | BAC San José | CxP | Tarjeta Crédito | CRC | 1831000 | Saldo tarjeta Visa Clásica | Tarjeta Crédito | No | Pre-cargado - Corte día 15 | No | | **Pendiente** | | Deuda Inicial | **Negocio** |
+| 4 | HOY | BCR | CxP | Tarjeta Crédito | CRC | 1750000 | Saldo tarjeta Mastercard | Tarjeta Crédito | No | Pre-cargado - Corte día 20 | No | | **Pendiente** | | Deuda Inicial | **Negocio** |
+| 5 | HOY | Credomatic | CxP | Tarjeta Crédito | USD | 2500 | Saldo tarjeta Platinum | Tarjeta Crédito | No | Pre-cargado - Corte día 10 | No | | **Pendiente** | | Deuda Inicial | **Negocio** |
+| 6 | HOY | Credomatic | CxP | Tarjeta Crédito | CRC | 2800000 | Saldo tarjeta Gold | Tarjeta Crédito | No | Pre-cargado - Corte día 10 | No | | **Pendiente** | | Deuda Inicial | **Negocio** |
+
+**Nota:** Dropdowns en negrita indican valores en ESPAÑOL ahora.
 
 ---
 
@@ -283,17 +286,18 @@ Fila 2: Headers
 | G | Días Vencidos | Calculado | 0 | 15 |
 | H | Equiv USD | Calculado | $#,##0.00 | 15 |
 
-### Fórmula FILTER Principal (A3)
+### Fórmula FILTER Principal (A3) - ACTUALIZADA ESPAÑOL
 
 ```excel
 =FILTER(
   TRANSACCIONES!B:B,
-  (TRANSACCIONES!C:C="CxP") * (TRANSACCIONES!M:M="Pending"),
+  (TRANSACCIONES!C:C="CxP") * (TRANSACCIONES!M:M="Pendiente"),
   "Sin CxP pendientes"
 )
 ```
 
 **Nota:** Cada columna B, C, D, E, F usa FILTER similar pero referencia la columna correspondiente.
+**IMPORTANTE:** Estado ahora es "Pendiente" (español), no "Pending".
 
 ### Columna G (Días Vencidos)
 
@@ -326,14 +330,15 @@ H: =SUM(H3:H100)
 
 ## 🏗️ HOJA 5: CxC (Cuentas por Cobrar)
 
-### Igual que CxP pero filtra:
+### Igual que CxP pero filtra: - ACTUALIZADA ESPAÑOL
 ```excel
 =FILTER(
   TRANSACCIONES!B:B,
-  (TRANSACCIONES!C:C="CxC") * (TRANSACCIONES!M:M="Pending"),
+  (TRANSACCIONES!C:C="CxC") * (TRANSACCIONES!M:M="Pendiente"),
   "Sin CxC pendientes"
 )
 ```
+**IMPORTANTE:** Estado ahora es "Pendiente" (español), no "Pending".
 
 **Alerta días pendientes:**
 - > 60 días → Fondo rojo
@@ -352,10 +357,12 @@ Proyección mensual de ingresos vs gastos.
 | Col | Campo | Fórmula | Ancho |
 |-----|-------|---------|-------|
 | A | Mes | Texto ("Enero", "Febrero"...) | 15 |
-| B | Ingresos USD | =SUMIFS(TRANSACCIONES!F:F, TRANSACCIONES!C:C, "Income", TRANSACCIONES!E:E, "USD", TRANSACCIONES!A:A, ">=FECHA_INICIO_MES", TRANSACCIONES!A:A, "<=FECHA_FIN_MES") | 18 |
-| C | Gastos USD | Similar a B pero "Expense" | 18 |
+| B | Ingresos USD | =SUMIFS(TRANSACCIONES!F:F, TRANSACCIONES!C:C, "Ingreso", TRANSACCIONES!E:E, "USD", TRANSACCIONES!A:A, ">=FECHA_INICIO_MES", TRANSACCIONES!A:A, "<=FECHA_FIN_MES") | 18 |
+| C | Gastos USD | Similar a B pero "Gasto" | 18 |
 | D | Flujo Neto | =B3-C3 | 18 |
 | E | Acumulado | =IF(A3="Enero", D3, E2+D3) | 18 |
+
+**ACTUALIZADO:** Categorías ahora son "Ingreso" y "Gasto" (español), no "Income"/"Expense".
 
 **Formato:**
 - Números: $#,##0.00
@@ -375,14 +382,16 @@ Calcular IVA 13% EXCLUYENDO proveedores zona franca.
 | A | Fecha | Referencia TRANSACCIONES | 12 |
 | B | Entidad | Referencia | 25 |
 | C | Monto Base | Referencia | 15 |
-| D | IVA Aplicable | =IF(AND(TRANSACCIONES!I="Yes", NOT(OR(B3=CONFIG!$B$10, B3=CONFIG!$B$11))), C3*0.13, 0) | 15 |
+| D | IVA Aplicable | =IF(AND(TRANSACCIONES!I="Sí", NOT(OR(B3=CONFIG!$B$10, B3=CONFIG!$B$11))), C3*0.13, 0) | 15 |
 | E | Tipo | "Venta" o "Compra" | 12 |
 
 **Fórmula explicada columna D:**
-- SI IVA="Yes" en TRANSACCIONES
+- SI IVA="Sí" en TRANSACCIONES (español ahora)
 - Y Entidad NO es zona franca (CONFIG B10 o B11)
 - ENTONCES Monto * 13%
 - SINO 0
+
+**ACTUALIZADO:** IVA ahora es "Sí" (español), no "Yes".
 
 ### Totales
 
@@ -470,9 +479,13 @@ Separar gastos personales vs negocio.
 
 | Tipo | Ingresos | Gastos | Balance |
 |------|----------|--------|---------|
-| PERSONAL | =SUMIFS(TRANSACCIONES!F:F, P:P, "Personal", C:C, "Income") | =SUMIFS(..., "Expense") | =Ing-Gas |
-| BUSINESS | =SUMIFS(..., "Business", ...) | | |
+| PERSONAL | =SUMIFS(TRANSACCIONES!F:F, P:P, "Personal", C:C, "Ingreso") | =SUMIFS(TRANSACCIONES!F:F, P:P, "Personal", C:C, "Gasto") | =Ing-Gas |
+| NEGOCIO | =SUMIFS(TRANSACCIONES!F:F, P:P, "Negocio", C:C, "Ingreso") | =SUMIFS(TRANSACCIONES!F:F, P:P, "Negocio", C:C, "Gasto") | =Ing-Gas |
 | TOTAL | =SUM | =SUM | =SUM |
+
+**ACTUALIZADO:**
+- "Personal" y "Negocio" (español, no "Business")
+- "Ingreso" y "Gasto" (español, no "Income"/"Expense")
 
 **Formato:**
 - Ingresos: Verde
@@ -607,6 +620,54 @@ Detectar automáticamente anomalías en los datos.
 ### Protección
 - Hojas 1, 4-15: **Protegidas** (sin password, solo lectura)
 - Hojas 2, 3: **Sin protección** (editables)
+
+---
+
+## 📝 RESUMEN DE CAMBIOS SOLICITADOS POR USUARIO
+
+**Fecha:** 16/nov/2025 - Revisión basada en feedback del usuario
+
+### Cambios Aplicados: Dropdowns en ESPAÑOL
+
+**✅ ACTUALIZADO - Todos los dropdowns ahora en ESPAÑOL:**
+
+| Campo | ANTES (inglés) | DESPUÉS (español) |
+|-------|---------------|-------------------|
+| Categoría | Income, Expense, Inventory, Services | **Ingreso, Gasto, Inventario, Servicios** |
+| Forma Pago | Cash, Transfer, Credit Card, Check | **Efectivo, Transferencia, Tarjeta Crédito, Cheque** |
+| IVA | Yes, No | **Sí, No** |
+| Recurrente | Yes, No | **Sí, No** |
+| Estado | Paid, Pending, Collected, Canceled | **Pagado, Pendiente, Cobrado, Cancelado** |
+| Personal/Negocio | Personal, Business | **Personal, Negocio** |
+
+**✅ FÓRMULAS ACTUALIZADAS CON VALORES EN ESPAÑOL:**
+
+- CxP: `=FILTER(..., M:M="Pendiente", ...)` (antes "Pending")
+- CxC: `=FILTER(..., M:M="Pendiente", ...)` (antes "Pending")
+- FLUJO_CAJA: `=SUMIFS(..., C:C, "Ingreso", ...)` (antes "Income")
+- FLUJO_CAJA: `=SUMIFS(..., C:C, "Gasto", ...)` (antes "Expense")
+- IVA_CONTROL: `=IF(AND(..., I="Sí", ...), ...)` (antes "Yes")
+- PERSONAL_VS_NEGOCIO: `=SUMIFS(..., P:P, "Negocio", C:C, "Ingreso", ...)` (antes "Business"/"Income")
+
+**✅ DATOS PRE-CARGADOS ACTUALIZADOS:**
+
+4 tarjetas ahora usan valores en español:
+- Estado: **"Pendiente"** (antes "Pending")
+- Pago: **"Tarjeta Crédito"** (antes "Credit Card")
+- P/N: **"Negocio"** (antes "Business")
+- IVA: **"No"** (ya estaba correcto)
+
+**⚠️ IMPORTANTE - LÓGICA EN INGLÉS:**
+
+Las **funciones de Excel** permanecen en INGLÉS (Excel está en inglés):
+- ✅ SUM, IF, FILTER, SUMIF, SUMIFS, AND, OR, etc.
+- ✅ SOLO los **datos del usuario** están en español
+
+**Ejemplo correcto:**
+```excel
+=FILTER(TRANSACCIONES!B:B, (TRANSACCIONES!M:M="Pendiente"), ...)
+      ↑ Función INGLÉS              ↑ Dato ESPAÑOL
+```
 
 ---
 
