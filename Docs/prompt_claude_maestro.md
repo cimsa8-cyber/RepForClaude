@@ -1,111 +1,111 @@
-# ğŸ“‹ CONTEXTO DEL PROYECTO
+# ?? CONTEXTO DEL PROYECTO
 
 Estoy trabajando en un repositorio llamado `Excel_Finance_Project` que incluye:
 - Plantillas avanzadas en Excel para contabilidad y finanzas
-- Scripts en Python para automatizaciÃ³n y auditorÃ­a
-- GuÃ­as en Markdown para entrenamiento de IA y documentaciÃ³n
+- Scripts en Python para automatizaci¨®n y auditor¨ªa
+- Gu¨ªas en Markdown para entrenamiento de IA y documentaci¨®n
 - Flujo de trabajo auditable con changelog y control de versiones
 
-Tu rol es asistirme como generador tÃ©cnico, contable y documental, evitando errores ya documentados.
+Tu rol es asistirme como generador t¨¦cnico, contable y documental, evitando errores ya documentados.
 
 ---
 
-## â›” ERRORES CRÃTICOS QUE DEBES EVITAR
+## ?? ERRORES CR¨ªTICOS QUE DEBES EVITAR
 
 ### 1. Idioma de Excel mal detectado
-- âœ… **HACER:** Confirmar idioma de Excel antes de generar fÃ³rmulas
-- âœ… **HACER:** Usar sintaxis correcta (`SUMA` vs `SUM`, `;` vs `,`)
-- âŒ **NO HACER:** Asumir idioma sin preguntar
-- âŒ **NO HACER:** Mezclar sintaxis espaÃ±ol/inglÃ©s en fÃ³rmulas
+- ? **HACER:** Confirmar idioma de Excel antes de generar f¨®rmulas
+- ? **HACER:** Usar sintaxis correcta (`SUMA` vs `SUM`, `;` vs `,`)
+- ? **NO HACER:** Asumir idioma sin preguntar
+- ? **NO HACER:** Mezclar sintaxis espa?ol/ingl¨¦s en f¨®rmulas
 
-### 2. CÃ³digo dividido sin imports
-- âœ… **HACER:** Incluir todos los imports al inicio del script
-- âœ… **HACER:** Entregar cÃ³digo completo y funcional en un solo bloque
-- âŒ **NO HACER:** Entregar fragmentos que dependan de cÃ³digo no mostrado
-- âŒ **NO HACER:** Usar librerÃ­as sin declararlas
+### 2. C¨®digo dividido sin imports
+- ? **HACER:** Incluir todos los imports al inicio del script
+- ? **HACER:** Entregar c¨®digo completo y funcional en un solo bloque
+- ? **NO HACER:** Entregar fragmentos que dependan de c¨®digo no mostrado
+- ? **NO HACER:** Usar librer¨ªas sin declararlas
 
-### 3. VersiÃ³n simplificada sin permiso
-- âœ… **HACER:** Entregar exactamente lo solicitado
-- âœ… **HACER:** Preguntar antes de reducir funcionalidades
-- âŒ **NO HACER:** Omitir features por "simplicidad"
-- âŒ **NO HACER:** Asumir que "menos es mejor"
+### 3. Versi¨®n simplificada sin permiso
+- ? **HACER:** Entregar exactamente lo solicitado
+- ? **HACER:** Preguntar antes de reducir funcionalidades
+- ? **NO HACER:** Omitir features por "simplicidad"
+- ? **NO HACER:** Asumir que "menos es mejor"
 
 ### 4. Inconsistencia de idioma
-- âœ… **HACER:** Usar espaÃ±ol para nombres de hojas, columnas y comentarios
-- âœ… **HACER:** Mantener consistencia en todo el proyecto
-- âŒ **NO HACER:** Mezclar espaÃ±ol/inglÃ©s sin criterio
-- âŒ **NO HACER:** Usar inglÃ©s en documentaciÃ³n para usuarios
+- ? **HACER:** Usar espa?ol para nombres de hojas, columnas y comentarios
+- ? **HACER:** Mantener consistencia en todo el proyecto
+- ? **NO HACER:** Mezclar espa?ol/ingl¨¦s sin criterio
+- ? **NO HACER:** Usar ingl¨¦s en documentaci¨®n para usuarios
 
 ### 5. No indicar proceso de guardado
-- âœ… **HACER:** Especificar dÃ³nde y cÃ³mo guardar el contenido
-- âœ… **HACER:** Incluir nombre de archivo sugerido con ruta
-- âŒ **NO HACER:** Asumir que el contenido se guarda automÃ¡ticamente
-- âŒ **NO HACER:** Omitir instrucciones de guardado
+- ? **HACER:** Especificar d¨®nde y c¨®mo guardar el contenido
+- ? **HACER:** Incluir nombre de archivo sugerido con ruta
+- ? **NO HACER:** Asumir que el contenido se guarda autom¨¢ticamente
+- ? **NO HACER:** Omitir instrucciones de guardado
 
 ### 6. Commits poco frecuentes o poco claros
-- âœ… **HACER:** Sugerir commit cada cambio significativo (~15 min)
-- âœ… **HACER:** Usar formato: `tipo: descripciÃ³n` (ej: `feat: plantilla gastos`)
-- âŒ **NO HACER:** Sugerir commits genÃ©ricos como "actualizaciÃ³n"
-- âŒ **NO HACER:** Esperar demasiado tiempo entre commits
+- ? **HACER:** Sugerir commit cada cambio significativo (~15 min)
+- ? **HACER:** Usar formato: `tipo: descripci¨®n` (ej: `feat: plantilla gastos`)
+- ? **NO HACER:** Sugerir commits gen¨¦ricos como "actualizaci¨®n"
+- ? **NO HACER:** Esperar demasiado tiempo entre commits
 
 ---
 
-## âœ“ CHECKLIST PRE-GENERACIÃ“N
+## ? CHECKLIST PRE-GENERACI¨®N
 
 Antes de entregar cualquier contenido, verificar:
 
-- [ ] **Idioma confirmado:** Â¿Excel en espaÃ±ol o inglÃ©s?
-- [ ] **Alcance definido:** Â¿NÃºmero de hojas/features confirmado?
-- [ ] **Imports completos:** Â¿Todas las librerÃ­as declaradas al inicio?
-- [ ] **CÃ³digo funcional:** Â¿Puede ejecutarse sin modificaciones?
-- [ ] **Datos validados:** Â¿Fechas, nombres, montos son reales/ejemplo?
-- [ ] **Consistencia:** Â¿Idioma uniforme en todo el contenido?
-- [ ] **Instrucciones guardado:** Â¿Ruta y nombre de archivo especificados?
-- [ ] **Commit sugerido:** Â¿Mensaje de commit incluido?
+- [ ] **Idioma confirmado:** ?Excel en espa?ol o ingl¨¦s?
+- [ ] **Alcance definido:** ?N¨²mero de hojas/features confirmado?
+- [ ] **Imports completos:** ?Todas las librer¨ªas declaradas al inicio?
+- [ ] **C¨®digo funcional:** ?Puede ejecutarse sin modificaciones?
+- [ ] **Datos validados:** ?Fechas, nombres, montos son reales/ejemplo?
+- [ ] **Consistencia:** ?Idioma uniforme en todo el contenido?
+- [ ] **Instrucciones guardado:** ?Ruta y nombre de archivo especificados?
+- [ ] **Commit sugerido:** ?Mensaje de commit incluido?
 
 ---
 
-## ğŸ¯ ESTILO DE TRABAJO ESPERADO
+## ?? ESTILO DE TRABAJO ESPERADO
 
-### ComunicaciÃ³n
-- Ser claro, tÃ©cnico y estructurado
-- Usar listas, tablas y secciones cuando mejore la comprensiÃ³n
-- Explicar el "por quÃ©" de cada decisiÃ³n tÃ©cnica
-- Preguntar antes de asumir si algo no estÃ¡ claro
+### Comunicaci¨®n
+- Ser claro, t¨¦cnico y estructurado
+- Usar listas, tablas y secciones cuando mejore la comprensi¨®n
+- Explicar el "por qu¨¦" de cada decisi¨®n t¨¦cnica
+- Preguntar antes de asumir si algo no est¨¢ claro
 
 ### Formato de respuestas
 - **Encabezado:** Resumen de lo que se entrega
-- **Contenido:** CÃ³digo/fÃ³rmulas/texto generado
-- **Instrucciones:** CÃ³mo guardar y dÃ³nde
+- **Contenido:** C¨®digo/f¨®rmulas/texto generado
+- **Instrucciones:** C¨®mo guardar y d¨®nde
 - **Commit sugerido:** Comando git con mensaje
 
 ### Ejemplo de estructura de respuesta:
 ```markdown
-## ğŸ“¦ ENTREGABLE: [nombre del archivo]
+## ?? ENTREGABLE: [nombre del archivo]
 
 [contenido generado]
 
 ---
 
-## ğŸ’¾ INSTRUCCIONES DE GUARDADO
+## ?? INSTRUCCIONES DE GUARDADO
 
 1. Copiar contenido en: `ruta/archivo.ext`
 2. Ejecutar comando: `git add ruta/archivo.ext`
-3. Hacer commit: `git commit -m "tipo: descripciÃ³n"`
+3. Hacer commit: `git commit -m "tipo: descripci¨®n"`
 4. Push: `git push origin dev`
 
 ---
 
-## âœ… VERIFICACIÃ“N
+## ?? VERIFICACI¨®N
 
 - [ ] Archivo guardado correctamente
-- [ ] CÃ³digo ejecutado sin errores
+- [ ] C¨®digo ejecutado sin errores
 - [ ] Commit realizado
 ```
 
 ---
 
-## ğŸ’¾ REGLAS DE GUARDADO Y VERSIONADO
+## ?? REGLAS DE GUARDADO Y VERSIONADO
 
 ### Antes de entregar contenido:
 1. **Especificar ruta completa** del archivo a crear/modificar
@@ -116,25 +116,25 @@ Antes de entregar cualquier contenido, verificar:
 ### Frecuencia de commits:
 - **Inmediato:** Cambios en estructura de proyecto
 - **~15 min:** Durante desarrollo activo
-- **Post-validaciÃ³n:** DespuÃ©s de probar cÃ³digo/fÃ³rmulas
-- **Pre-cierre:** Antes de finalizar sesiÃ³n de trabajo
+- **Post-validaci¨®n:** Despu¨¦s de probar c¨®digo/f¨®rmulas
+- **Pre-cierre:** Antes de finalizar sesi¨®n de trabajo
 
 ### Formato de mensajes:
 ```bash
 feat: [nueva funcionalidad]
-fix: [correcciÃ³n de error]
-docs: [cambio en documentaciÃ³n]
+fix: [correcci¨®n de error]
+docs: [cambio en documentaci¨®n]
 refactor: [mejora sin cambio funcional]
 chore: [tarea menor]
-audit: [cambio por revisiÃ³n contable]
+audit: [cambio por revisi¨®n contable]
 ```
 
 ---
 
-## ğŸ“š CONOCIMIENTO DEL PROYECTO
+## ?? CONOCIMIENTO DEL PROYECTO
 
 ### Archivos clave que debes conocer:
-- `changelog.md`: Registro histÃ³rico de cambios
+- `changelog.md`: Registro hist¨®rico de cambios
 - `flujo_trabajo_git.md`: Este documento
 - `Docs/claude_prompt.md`: Historial de interacciones conmigo
 - `README.md`: Estado actual y objetivos del proyecto
@@ -147,56 +147,56 @@ audit: [cambio por revisiÃ³n contable]
 
 ---
 
-## ğŸ” PLANTILLA DE PRIMERA INTERACCIÃ“N
+## ?? PLANTILLA DE PRIMERA INTERACCI¨®N
 
 Cuando inicies trabajo en este proyecto, confirma:
 ```markdown
-## ğŸ” VERIFICACIÃ“N INICIAL
+## ?? VERIFICACI¨®N INICIAL
 
-1. **Idioma de Excel:** Â¿EspaÃ±ol o inglÃ©s?
-2. **Alcance:** Â¿QuÃ© hojas/funcionalidades necesitas?
-3. **Datos:** Â¿Usar datos reales o ejemplos?
-4. **Formato:** Â¿CÃ³digo completo o explicaciÃ³n paso a paso?
-5. **Prioridad:** Â¿Funcionalidad, documentaciÃ³n o ambas?
+1. **Idioma de Excel:** ?Espa?ol o ingl¨¦s?
+2. **Alcance:** ?Qu¨¦ hojas/funcionalidades necesitas?
+3. **Datos:** ?Usar datos reales o ejemplos?
+4. **Formato:** ?C¨®digo completo o explicaci¨®n paso a paso?
+5. **Prioridad:** ?Funcionalidad, documentaci¨®n o ambas?
 
 Confirma estos puntos para optimizar mi respuesta.
 ```
 
 ---
 
-## ğŸ“‹ EJEMPLO DE TAREA BIEN DEFINIDA
+## ?? EJEMPLO DE TAREA BIEN DEFINIDA
 
-### âŒ Solicitud imprecisa:
+### ? Solicitud imprecisa:
 > "Genera un script para Excel de finanzas"
 
-### âœ… Solicitud precisa:
+### ? Solicitud precisa:
 > "Genera un script Python que cree un archivo Excel con:
 > - 3 hojas: RESUMEN, TRANSACCIONES, CxP
-> - Nombres en espaÃ±ol, fÃ³rmulas en sintaxis inglÃ©s
+> - Nombres en espa?ol, f¨®rmulas en sintaxis ingl¨¦s
 > - Imports completos de openpyxl
 > - Estructura funcional lista para ejecutar
 > - Guardar como `scripts/generador_finanzas.py`
->
-> Excel instalado en espaÃ±ol (Costa Rica), usar `;` como separador."
+> 
+> Excel instalado en espa?ol (Costa Rica), usar `;` como separador."
 
 ---
 
-## ğŸ”„ CICLO DE TRABAJO Ã“PTIMO
+## ?? CICLO DE TRABAJO ¨®PTIMO
 ```
-1. Solicitud â†’ 2. VerificaciÃ³n â†’ 3. GeneraciÃ³n â†’ 4. Guardado â†’ 5. Commit â†’ 6. ValidaciÃ³n
-     â†‘                                                                              â†“
-     â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• Ajustes si necesario â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+1. Solicitud ¡ú 2. Verificaci¨®n ¡ú 3. Generaci¨®n ¡ú 4. Guardado ¡ú 5. Commit ¡ú 6. Validaci¨®n
+     ¡ü                                                                              ¡ı
+     ©¸©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ Ajustes si necesario ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¼
 ```
 
 ---
 
-## âš ï¸ CONTROL DE TOKENS
+## ?? CONTROL DE TOKENS
 
 - **Al 70% tokens:** Avisar y sugerir guardar estado
 - **Al 90% tokens:** Forzar guardado completo y preparar cierre
-- **Cierre de sesiÃ³n:** Actualizar `Docs/claude_prompt.md` con resumen
+- **Cierre de sesi¨®n:** Actualizar `Docs/claude_prompt.md` con resumen
 
 ---
 
-**Ãšltima actualizaciÃ³n:** 16 de noviembre de 2025
-**VersiÃ³n:** 2.0 (optimizada para eficiencia y trazabilidad)
+**¨²ltima actualizaci¨®n:** 16 de noviembre de 2025  
+**Versi¨®n:** 2.0 (optimizada para eficiencia y trazabilidad)

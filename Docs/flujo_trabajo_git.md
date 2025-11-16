@@ -1,6 +1,6 @@
 # Flujo de trabajo Git para Proyecto FinanzasContabilidad
 
-> **Propósito:** Flujo Git audit-ready para proyectos financieros con Claude
+> **Propósito:** Flujo Git audit-ready para proyectos financieros con Claude  
 > **Última revisión:** 16/nov/2025
 
 Este documento describe paso a paso cómo se estructura, inicializa y mantiene el repositorio.
