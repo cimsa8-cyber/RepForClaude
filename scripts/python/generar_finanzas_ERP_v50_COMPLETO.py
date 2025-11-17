@@ -1459,6 +1459,11 @@ def main():
     wb = Workbook()
     wb.remove(wb.active)  # Remover hoja default
 
+    # CRÍTICO: Configurar para que Excel recalcule TODAS las fórmulas al abrir
+    # Esto evita que Excel remueva fórmulas que no reconoce inmediatamente
+    wb.calculation.calcMode = 'auto'
+    wb.calculation.fullCalcOnLoad = True
+
     # Generar hojas en orden
     print("\n📊 Generando hojas principales...")
     crear_hoja_resumen(wb)
