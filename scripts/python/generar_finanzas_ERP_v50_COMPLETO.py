@@ -604,18 +604,30 @@ def crear_hoja_cxp(wb):
 
     # Fórmulas FILTER PURO (sin cálculos locales - TODO viene de TRANSACCIONES)
     # IMPORTANTE: Usar rangos específicos (B3:B1000) en vez de columnas completas (B:B) para evitar confusión con headers
-    # CRÍTICO: Usar PUNTO Y COMA (;) como separador de argumentos (configuración regional española)
-    ws['A3'] = '=FILTER(TRANSACCIONES!B3:B1000;(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente");"Sin CxP pendientes")'
-    ws['B3'] = '=FILTER(TRANSACCIONES!A3:A1000;(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente");"")'
-    ws['C3'] = '=FILTER(TRANSACCIONES!F3:F1000;(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente");"")'
-    ws['D3'] = '=FILTER(TRANSACCIONES!E3:E1000;(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente");"")'
-    ws['E3'] = '=FILTER(TRANSACCIONES!G3:G1000;(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente");"")'
-    ws['F3'] = '=FILTER(TRANSACCIONES!M3:M1000;(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente");"")'
-    ws['G3'] = '=FILTER(TRANSACCIONES!S3:S1000;(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente");"")'  # Días Trans (calculado en TRANS)
-    ws['H3'] = '=FILTER(TRANSACCIONES!T3:T1000;(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente");"")'  # Equiv USD (calculado en TRANS)
-    ws['I3'] = '=FILTER(TRANSACCIONES!N3:N1000;(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente");"")'
-    ws['J3'] = '=FILTER(TRANSACCIONES!U3:U1000;(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente");"")'  # Fecha Venc (calculado en TRANS)
-    ws['K3'] = '=FILTER(TRANSACCIONES!V3:V1000;(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente");"")'  # Prioridad (calculado en TRANS)
+    # CRÍTICO: NO usar separadores - dejar que Excel ajuste según configuración regional
+    # Usar COMAS (,) y Excel los convertirá a punto y coma (;) si es necesario
+    ws['A3'].value = '=FILTER(TRANSACCIONES!B3:B1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"Sin CxP pendientes")'
+    ws['A3'].data_type = 'f'  # Explicitly mark as formula
+    ws['B3'].value = '=FILTER(TRANSACCIONES!A3:A1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['B3'].data_type = 'f'
+    ws['C3'].value = '=FILTER(TRANSACCIONES!F3:F1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['C3'].data_type = 'f'
+    ws['D3'].value = '=FILTER(TRANSACCIONES!E3:E1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['D3'].data_type = 'f'
+    ws['E3'].value = '=FILTER(TRANSACCIONES!G3:G1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['E3'].data_type = 'f'
+    ws['F3'].value = '=FILTER(TRANSACCIONES!M3:M1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['F3'].data_type = 'f'
+    ws['G3'].value = '=FILTER(TRANSACCIONES!S3:S1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'  # Días Trans (calculado en TRANS)
+    ws['G3'].data_type = 'f'
+    ws['H3'].value = '=FILTER(TRANSACCIONES!T3:T1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'  # Equiv USD (calculado en TRANS)
+    ws['H3'].data_type = 'f'
+    ws['I3'].value = '=FILTER(TRANSACCIONES!N3:N1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['I3'].data_type = 'f'
+    ws['J3'].value = '=FILTER(TRANSACCIONES!U3:U1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'  # Fecha Venc (calculado en TRANS)
+    ws['J3'].data_type = 'f'
+    ws['K3'].value = '=FILTER(TRANSACCIONES!V3:V1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'  # Prioridad (calculado en TRANS)
+    ws['K3'].data_type = 'f'
     ws['L3'] = ""  # Contacto manual
 
     # Formatos
@@ -660,18 +672,30 @@ def crear_hoja_cxc(wb):
 
     # Fórmulas FILTER PURO (sin cálculos locales - TODO viene de TRANSACCIONES)
     # IMPORTANTE: Usar rangos específicos (B3:B1000) en vez de columnas completas (B:B) para evitar confusión con headers
-    # CRÍTICO: Usar PUNTO Y COMA (;) como separador de argumentos (configuración regional española)
-    ws['A3'] = '=FILTER(TRANSACCIONES!B3:B1000;(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente");"Sin CxC pendientes")'
-    ws['B3'] = '=FILTER(TRANSACCIONES!A3:A1000;(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente");"")'
-    ws['C3'] = '=FILTER(TRANSACCIONES!F3:F1000;(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente");"")'
-    ws['D3'] = '=FILTER(TRANSACCIONES!E3:E1000;(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente");"")'
-    ws['E3'] = '=FILTER(TRANSACCIONES!G3:G1000;(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente");"")'
-    ws['F3'] = '=FILTER(TRANSACCIONES!M3:M1000;(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente");"")'
-    ws['G3'] = '=FILTER(TRANSACCIONES!S3:S1000;(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente");"")'  # Días Trans (calculado en TRANS)
-    ws['H3'] = '=FILTER(TRANSACCIONES!T3:T1000;(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente");"")'  # Equiv USD (calculado en TRANS)
-    ws['I3'] = '=FILTER(TRANSACCIONES!N3:N1000;(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente");"")'
-    ws['J3'] = '=FILTER(TRANSACCIONES!U3:U1000;(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente");"")'  # Fecha Venc (calculado en TRANS)
-    ws['K3'] = '=FILTER(TRANSACCIONES!W3:W1000;(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente");"")'  # Prioridad CxC (calculado en TRANS)
+    # CRÍTICO: NO usar separadores - dejar que Excel ajuste según configuración regional
+    # Usar COMAS (,) y Excel los convertirá a punto y coma (;) si es necesario
+    ws['A3'].value = '=FILTER(TRANSACCIONES!B3:B1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"Sin CxC pendientes")'
+    ws['A3'].data_type = 'f'  # Explicitly mark as formula
+    ws['B3'].value = '=FILTER(TRANSACCIONES!A3:A1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['B3'].data_type = 'f'
+    ws['C3'].value = '=FILTER(TRANSACCIONES!F3:F1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['C3'].data_type = 'f'
+    ws['D3'].value = '=FILTER(TRANSACCIONES!E3:E1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['D3'].data_type = 'f'
+    ws['E3'].value = '=FILTER(TRANSACCIONES!G3:G1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['E3'].data_type = 'f'
+    ws['F3'].value = '=FILTER(TRANSACCIONES!M3:M1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['F3'].data_type = 'f'
+    ws['G3'].value = '=FILTER(TRANSACCIONES!S3:S1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'  # Días Trans (calculado en TRANS)
+    ws['G3'].data_type = 'f'
+    ws['H3'].value = '=FILTER(TRANSACCIONES!T3:T1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'  # Equiv USD (calculado en TRANS)
+    ws['H3'].data_type = 'f'
+    ws['I3'].value = '=FILTER(TRANSACCIONES!N3:N1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['I3'].data_type = 'f'
+    ws['J3'].value = '=FILTER(TRANSACCIONES!U3:U1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'  # Fecha Venc (calculado en TRANS)
+    ws['J3'].data_type = 'f'
+    ws['K3'].value = '=FILTER(TRANSACCIONES!W3:W1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'  # Prioridad CxC (calculado en TRANS)
+    ws['K3'].data_type = 'f'
     ws['L3'] = ""  # Contacto manual
 
     # Formatos
