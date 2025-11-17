@@ -20,7 +20,7 @@ CARACTERÍSTICAS:
 
 HOJAS:
 1. RESUMEN - Dashboard 23 KPIs
-2. TRANSACCIONES - Single Source of Truth (18 cols)
+2. TRANSACCIONES - Single Source of Truth (23 cols: 17 inputs + 6 calculadas)
 3. CONFIG - Parámetros + cierre mensual
 4-15. Hojas auto-calculadas originales
 16. CIERRE_MENSUAL - Proceso + histórico
@@ -379,18 +379,19 @@ def crear_hoja_resumen(wb):
 # ═══════════════════════════════════════════════════════════════════════
 
 def crear_hoja_transacciones(wb):
-    """Crea hoja TRANSACCIONES con 18 columnas (17 inputs + 1 validación)."""
+    """Crea hoja TRANSACCIONES con 23 columnas (17 inputs + 6 calculadas)."""
     ws = wb.create_sheet("TRANSACCIONES")
 
     # Header principal
-    aplicar_estilo_header(ws, 1, 1, 18, "TRANSACCIONES - ÚNICA FUENTE DE VERDAD", "366092")
+    aplicar_estilo_header(ws, 1, 1, 23, "TRANSACCIONES - ÚNICA FUENTE DE VERDAD", "366092")
 
     # Headers de columnas
     headers = [
         "Fecha", "Entidad", "Categoría", "Subcategoría", "Moneda",
         "Monto", "Descripción", "Forma Pago", "IVA", "Notas",
         "Recurrente", "Proyecto", "Estado", "Factura #", "Tag",
-        "Personal/Negocio", "TC Aplicado", "✓ Validación"
+        "Personal/Negocio", "TC Aplicado", "✓ Validación",
+        "Días Trans", "Equiv USD", "Fecha Venc", "Prior CxP", "Prior CxC"
     ]
 
     for col, header in enumerate(headers, start=1):
@@ -446,21 +447,42 @@ def crear_hoja_transacciones(wb):
     crear_dropdown(ws, 'M3:M1000', 'Pagado,Pendiente,Cobrado,Cancelado')
     crear_dropdown(ws, 'P3:P1000', 'Personal,Negocio')
 
+    # Fórmulas COLUMNAS CALCULADAS (S, T, U, V, W)
+    for fila in range(3, 1001):
+        # Columna S: Días Transcurridos
+        ws.cell(row=fila, column=19).value = f'=IF(A{fila}<>"",TODAY()-A{fila},"")'
+        ws.cell(row=fila, column=19).number_format = '0'
+
+        # Columna T: Equiv USD
+        ws.cell(row=fila, column=20).value = f'=IF(E{fila}="USD",F{fila},IF(E{fila}="CRC",F{fila}/CONFIG!$B$5,""))'
+        ws.cell(row=fila, column=20).number_format = '$#,##0.00'
+
+        # Columna U: Fecha Vencimiento (Fecha + 30 días)
+        ws.cell(row=fila, column=21).value = f'=IF(A{fila}<>"",A{fila}+30,"")'
+        ws.cell(row=fila, column=21).number_format = 'DD/MM/YY'
+
+        # Columna V: Prioridad CxP
+        ws.cell(row=fila, column=22).value = f'=IF(AND(C{fila}="CxP",S{fila}>60),"Alta",IF(AND(C{fila}="CxP",S{fila}>30),"Media",IF(C{fila}="CxP","Baja","")))'
+
+        # Columna W: Prioridad CxC
+        ws.cell(row=fila, column=23).value = f'=IF(AND(C{fila}="CxC",S{fila}>90),"Alta",IF(AND(C{fila}="CxC",S{fila}>60),"Media",IF(C{fila}="CxC","Baja","")))'
+
     # Formatos de número
     for fila in range(3, 1001):
         ws.cell(row=fila, column=1).number_format = 'DD/MM/YY'  # Fecha
         ws.cell(row=fila, column=6).number_format = '#,##0.00'  # Monto
         ws.cell(row=fila, column=17).number_format = '0.00'     # TC Aplicado
 
-    # Ajustar anchos
+    # Ajustar anchos (23 columnas ahora)
     ajustar_ancho_columnas(ws, {
         'A': 12, 'B': 25, 'C': 15, 'D': 18, 'E': 10,
         'F': 15, 'G': 30, 'H': 15, 'I': 8, 'J': 25,
         'K': 12, 'L': 15, 'M': 12, 'N': 15, 'O': 15,
-        'P': 18, 'Q': 12, 'R': 20
+        'P': 18, 'Q': 12, 'R': 20, 'S': 12, 'T': 15,
+        'U': 12, 'V': 12, 'W': 12
     })
 
-    print("✓ Hoja TRANSACCIONES creada (18 columnas)")
+    print("✓ Hoja TRANSACCIONES creada (23 columnas: 17 inputs + 6 calculadas)")
 
 # ═══════════════════════════════════════════════════════════════════════
 # HOJA 3: CONFIG (Parámetros + Cierre Mensual)
@@ -543,18 +565,18 @@ def crear_hoja_cxp(wb):
         celda.fill = PatternFill(start_color='FF5252', end_color='FF5252', fill_type='solid')
         celda.alignment = Alignment(horizontal='center', wrap_text=True)
 
-    # Fórmulas FILTER
+    # Fórmulas FILTER PURO (sin cálculos locales - TODO viene de TRANSACCIONES)
     ws['A3'] = '=FILTER(TRANSACCIONES!B:B,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"Sin CxP pendientes")'
     ws['B3'] = '=FILTER(TRANSACCIONES!A:A,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"")'
     ws['C3'] = '=FILTER(TRANSACCIONES!F:F,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"")'
     ws['D3'] = '=FILTER(TRANSACCIONES!E:E,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"")'
     ws['E3'] = '=FILTER(TRANSACCIONES!G:G,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"")'
     ws['F3'] = '=FILTER(TRANSACCIONES!M:M,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"")'
-    ws['G3'] = '=IF(A3<>"",TODAY()-B3,"")'
-    ws['H3'] = '=IF(D3="USD",C3,C3/CONFIG!$B$5)'
+    ws['G3'] = '=FILTER(TRANSACCIONES!S:S,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"")'  # Días Trans (calculado en TRANS)
+    ws['H3'] = '=FILTER(TRANSACCIONES!T:T,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"")'  # Equiv USD (calculado en TRANS)
     ws['I3'] = '=FILTER(TRANSACCIONES!N:N,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"")'
-    ws['J3'] = '=IF(B3<>"",B3+30,"")'
-    ws['K3'] = '=IF(G3>60,"Alta",IF(G3>30,"Media","Baja"))'
+    ws['J3'] = '=FILTER(TRANSACCIONES!U:U,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"")'  # Fecha Venc (calculado en TRANS)
+    ws['K3'] = '=FILTER(TRANSACCIONES!V:V,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"")'  # Prioridad (calculado en TRANS)
     ws['L3'] = ""  # Contacto manual
 
     # Formatos
@@ -597,19 +619,19 @@ def crear_hoja_cxc(wb):
         celda.fill = PatternFill(start_color='4CAF50', end_color='4CAF50', fill_type='solid')
         celda.alignment = Alignment(horizontal='center', wrap_text=True)
 
-    # Fórmulas FILTER (cambio: CxC en vez de CxP)
+    # Fórmulas FILTER PURO (sin cálculos locales - TODO viene de TRANSACCIONES)
     ws['A3'] = '=FILTER(TRANSACCIONES!B:B,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"Sin CxC pendientes")'
     ws['B3'] = '=FILTER(TRANSACCIONES!A:A,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"")'
     ws['C3'] = '=FILTER(TRANSACCIONES!F:F,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"")'
     ws['D3'] = '=FILTER(TRANSACCIONES!E:E,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"")'
     ws['E3'] = '=FILTER(TRANSACCIONES!G:G,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"")'
     ws['F3'] = '=FILTER(TRANSACCIONES!M:M,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"")'
-    ws['G3'] = '=IF(A3<>"",TODAY()-B3,"")'
-    ws['H3'] = '=IF(D3="USD",C3,C3/CONFIG!$B$5)'
+    ws['G3'] = '=FILTER(TRANSACCIONES!S:S,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"")'  # Días Trans (calculado en TRANS)
+    ws['H3'] = '=FILTER(TRANSACCIONES!T:T,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"")'  # Equiv USD (calculado en TRANS)
     ws['I3'] = '=FILTER(TRANSACCIONES!N:N,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"")'
-    ws['J3'] = '=IF(B3<>"",B3+30,"")'
-    ws['K3'] = '=IF(G3>90,"Alta",IF(G3>60,"Media","Baja"))'  # Diferente: 90/60 en vez de 60/30
-    ws['L3'] = ""
+    ws['J3'] = '=FILTER(TRANSACCIONES!U:U,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"")'  # Fecha Venc (calculado en TRANS)
+    ws['K3'] = '=FILTER(TRANSACCIONES!W:W,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"")'  # Prioridad CxC (calculado en TRANS)
+    ws['L3'] = ""  # Contacto manual
 
     # Formatos
     ws['B3'].number_format = 'DD/MM/YY'
@@ -1450,7 +1472,7 @@ def main():
     """Función principal que genera el archivo Excel completo."""
     print("\n" + "="*70)
     print("  GENERADOR ERP v5.0 - SISTEMA COMPLETO PROFESIONAL")
-    print("  21 Hojas | 18 Columnas TRANSACCIONES | Audit-Ready")
+    print("  21 Hojas | 23 Columnas TRANSACCIONES (17 inputs + 6 calc) | Audit-Ready | SIN Refs Circulares")
     print("="*70 + "\n")
 
     print("Iniciando generación...")
@@ -1493,8 +1515,8 @@ def main():
     print("="*70)
     print(f"\n📁 Archivo generado: {output_file}")
     print(f"📊 Total de hojas: 21")
-    print(f"📝 Columnas TRANSACCIONES: 18")
-    print(f"💼 Sistema: Audit-Ready con Balance General + Estado Resultados")
+    print(f"📝 Columnas TRANSACCIONES: 23 (17 inputs + 6 calculadas)")
+    print(f"💼 Sistema: Audit-Ready con Balance General + Estado Resultados (SIN referencias circulares)")
     print(f"📅 Fecha: {HOY.strftime('%d/%m/%Y')}")
     print(f"💵 Tipo Cambio: USD→CRC = {TC_ACTUAL}")
 

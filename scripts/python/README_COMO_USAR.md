@@ -12,10 +12,10 @@
 ### Archivo Excel Generado
 ```
 📁 AlvaroVelasco_Finanzas_v5.0_COMPLETO.xlsx
-   Tamaño: 71KB
+   Tamaño: 129KB
    Hojas: 21
-   Columnas TRANSACCIONES: 18
-   Status: Listo para usar en Excel 365
+   Columnas TRANSACCIONES: 23 (17 inputs + 6 calculadas)
+   Status: Listo para usar en Excel 365 - SIN REFERENCIAS CIRCULARES
 ```
 
 ### Ubicación
