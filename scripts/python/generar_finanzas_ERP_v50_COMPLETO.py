@@ -157,22 +157,22 @@ def crear_hoja_resumen(wb):
     fila += 1
 
     ws[f'A{fila}'] = "Total CxP USD:"
-    ws[f'B{fila}'] = '=SUMIF(CxP!D:D,"USD",CxP!H:H)'
+    ws[f'B{fila}'] = '=SUMIF(CxP!D3:D1000,"USD",CxP!H3:H1000)'
     ws[f'B{fila}'].number_format = '$#,##0.00'
     fila += 1
 
     ws[f'A{fila}'] = "Total CxP CRC:"
-    ws[f'B{fila}'] = '=SUMIF(CxP!D:D,"CRC",CxP!C:C)'
+    ws[f'B{fila}'] = '=SUMIF(CxP!D3:D1000,"CRC",CxP!C3:C1000)'
     ws[f'B{fila}'].number_format = '₡#,##0.00'
     fila += 1
 
     ws[f'A{fila}'] = "Facturas vencidas:"
-    ws[f'B{fila}'] = '=COUNTIF(CxP!G:G,">0")'
+    ws[f'B{fila}'] = '=COUNTIF(CxP!G3:G1000,">0")'
     ws[f'B{fila}'].number_format = '0'
     fila += 1
 
     ws[f'A{fila}'] = "Promedio días pago:"
-    ws[f'B{fila}'] = '=AVERAGE(CxP!G:G)'
+    ws[f'B{fila}'] = '=AVERAGE(CxP!G3:G1000)'
     ws[f'B{fila}'].number_format = '0'
     fila += 2
 
@@ -181,27 +181,27 @@ def crear_hoja_resumen(wb):
     fila += 1
 
     ws[f'A{fila}'] = "Total CxC USD:"
-    ws[f'B{fila}'] = '=SUMIF(CxC!D:D,"USD",CxC!H:H)'
+    ws[f'B{fila}'] = '=SUMIF(CxC!D3:D1000,"USD",CxC!H3:H1000)'
     ws[f'B{fila}'].number_format = '$#,##0.00'
     fila += 1
 
     ws[f'A{fila}'] = "Total CxC CRC:"
-    ws[f'B{fila}'] = '=SUMIF(CxC!D:D,"CRC",CxC!C:C)'
+    ws[f'B{fila}'] = '=SUMIF(CxC!D3:D1000,"CRC",CxC!C3:C1000)'
     ws[f'B{fila}'].number_format = '₡#,##0.00'
     fila += 1
 
     ws[f'A{fila}'] = "Facturas >60 días:"
-    ws[f'B{fila}'] = '=COUNTIF(CxC!G:G,">60")'
+    ws[f'B{fila}'] = '=COUNTIF(CxC!G3:G1000,">60")'
     ws[f'B{fila}'].number_format = '0'
     fila += 1
 
     ws[f'A{fila}'] = "Promedio días cobro:"
-    ws[f'B{fila}'] = '=AVERAGE(CxC!G:G)'
+    ws[f'B{fila}'] = '=AVERAGE(CxC!G3:G1000)'
     ws[f'B{fila}'].number_format = '0'
     fila += 1
 
     ws[f'A{fila}'] = "% CxC en riesgo (>90):"
-    ws[f'B{fila}'] = '=IFERROR(SUMIF(CxC!G:G,">90",CxC!H:H)/SUM(CxC!H:H)*100,0)'
+    ws[f'B{fila}'] = '=IFERROR(SUMIF(CxC!G3:G1000,">90",CxC!H3:H1000)/SUM(CxC!H3:H1000)*100,0)'
     ws[f'B{fila}'].number_format = '0.0"%"'
     fila += 2
 
@@ -264,12 +264,12 @@ def crear_hoja_resumen(wb):
     fila += 1
 
     ws[f'A{fila}'] = "Días promedio CxC:"
-    ws[f'B{fila}'] = '=IFERROR(AVERAGE(CxC!G:G),0)'
+    ws[f'B{fila}'] = '=IFERROR(AVERAGE(CxC!G3:G1000),0)'
     ws[f'B{fila}'].number_format = '0'
     fila += 1
 
     ws[f'A{fila}'] = "Días promedio CxP:"
-    ws[f'B{fila}'] = '=IFERROR(AVERAGE(CxP!G:G),0)'
+    ws[f'B{fila}'] = '=IFERROR(AVERAGE(CxP!G3:G1000),0)'
     ws[f'B{fila}'].number_format = '0'
     fila += 1
 
@@ -357,7 +357,7 @@ def crear_hoja_resumen(wb):
     fila += 1
 
     ws[f'A{fila}'] = "Facturas vencidas >90 días:"
-    ws[f'B{fila}'] = '=COUNTIF(CxC!G:G,">90")'
+    ws[f'B{fila}'] = '=COUNTIF(CxC!G3:G1000,">90")'
     ws[f'B{fila}'].number_format = '0'
 
     # Ajustar anchos de columnas
@@ -566,17 +566,18 @@ def crear_hoja_cxp(wb):
         celda.alignment = Alignment(horizontal='center', wrap_text=True)
 
     # Fórmulas FILTER PURO (sin cálculos locales - TODO viene de TRANSACCIONES)
-    ws['A3'] = '=FILTER(TRANSACCIONES!B:B,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"Sin CxP pendientes")'
-    ws['B3'] = '=FILTER(TRANSACCIONES!A:A,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"")'
-    ws['C3'] = '=FILTER(TRANSACCIONES!F:F,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"")'
-    ws['D3'] = '=FILTER(TRANSACCIONES!E:E,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"")'
-    ws['E3'] = '=FILTER(TRANSACCIONES!G:G,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"")'
-    ws['F3'] = '=FILTER(TRANSACCIONES!M:M,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"")'
-    ws['G3'] = '=FILTER(TRANSACCIONES!S:S,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"")'  # Días Trans (calculado en TRANS)
-    ws['H3'] = '=FILTER(TRANSACCIONES!T:T,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"")'  # Equiv USD (calculado en TRANS)
-    ws['I3'] = '=FILTER(TRANSACCIONES!N:N,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"")'
-    ws['J3'] = '=FILTER(TRANSACCIONES!U:U,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"")'  # Fecha Venc (calculado en TRANS)
-    ws['K3'] = '=FILTER(TRANSACCIONES!V:V,(TRANSACCIONES!C:C="CxP")*(TRANSACCIONES!M:M="Pendiente"),"")'  # Prioridad (calculado en TRANS)
+    # IMPORTANTE: Usar rangos específicos (B3:B1000) en vez de columnas completas (B:B) para evitar confusión con headers
+    ws['A3'] = '=FILTER(TRANSACCIONES!B3:B1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"Sin CxP pendientes")'
+    ws['B3'] = '=FILTER(TRANSACCIONES!A3:A1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['C3'] = '=FILTER(TRANSACCIONES!F3:F1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['D3'] = '=FILTER(TRANSACCIONES!E3:E1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['E3'] = '=FILTER(TRANSACCIONES!G3:G1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['F3'] = '=FILTER(TRANSACCIONES!M3:M1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['G3'] = '=FILTER(TRANSACCIONES!S3:S1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'  # Días Trans (calculado en TRANS)
+    ws['H3'] = '=FILTER(TRANSACCIONES!T3:T1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'  # Equiv USD (calculado en TRANS)
+    ws['I3'] = '=FILTER(TRANSACCIONES!N3:N1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['J3'] = '=FILTER(TRANSACCIONES!U3:U1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'  # Fecha Venc (calculado en TRANS)
+    ws['K3'] = '=FILTER(TRANSACCIONES!V3:V1000,(TRANSACCIONES!C3:C1000="CxP")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'  # Prioridad (calculado en TRANS)
     ws['L3'] = ""  # Contacto manual
 
     # Formatos
@@ -620,17 +621,18 @@ def crear_hoja_cxc(wb):
         celda.alignment = Alignment(horizontal='center', wrap_text=True)
 
     # Fórmulas FILTER PURO (sin cálculos locales - TODO viene de TRANSACCIONES)
-    ws['A3'] = '=FILTER(TRANSACCIONES!B:B,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"Sin CxC pendientes")'
-    ws['B3'] = '=FILTER(TRANSACCIONES!A:A,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"")'
-    ws['C3'] = '=FILTER(TRANSACCIONES!F:F,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"")'
-    ws['D3'] = '=FILTER(TRANSACCIONES!E:E,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"")'
-    ws['E3'] = '=FILTER(TRANSACCIONES!G:G,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"")'
-    ws['F3'] = '=FILTER(TRANSACCIONES!M:M,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"")'
-    ws['G3'] = '=FILTER(TRANSACCIONES!S:S,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"")'  # Días Trans (calculado en TRANS)
-    ws['H3'] = '=FILTER(TRANSACCIONES!T:T,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"")'  # Equiv USD (calculado en TRANS)
-    ws['I3'] = '=FILTER(TRANSACCIONES!N:N,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"")'
-    ws['J3'] = '=FILTER(TRANSACCIONES!U:U,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"")'  # Fecha Venc (calculado en TRANS)
-    ws['K3'] = '=FILTER(TRANSACCIONES!W:W,(TRANSACCIONES!C:C="CxC")*(TRANSACCIONES!M:M="Pendiente"),"")'  # Prioridad CxC (calculado en TRANS)
+    # IMPORTANTE: Usar rangos específicos (B3:B1000) en vez de columnas completas (B:B) para evitar confusión con headers
+    ws['A3'] = '=FILTER(TRANSACCIONES!B3:B1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"Sin CxC pendientes")'
+    ws['B3'] = '=FILTER(TRANSACCIONES!A3:A1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['C3'] = '=FILTER(TRANSACCIONES!F3:F1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['D3'] = '=FILTER(TRANSACCIONES!E3:E1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['E3'] = '=FILTER(TRANSACCIONES!G3:G1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['F3'] = '=FILTER(TRANSACCIONES!M3:M1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['G3'] = '=FILTER(TRANSACCIONES!S3:S1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'  # Días Trans (calculado en TRANS)
+    ws['H3'] = '=FILTER(TRANSACCIONES!T3:T1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'  # Equiv USD (calculado en TRANS)
+    ws['I3'] = '=FILTER(TRANSACCIONES!N3:N1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'
+    ws['J3'] = '=FILTER(TRANSACCIONES!U3:U1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'  # Fecha Venc (calculado en TRANS)
+    ws['K3'] = '=FILTER(TRANSACCIONES!W3:W1000,(TRANSACCIONES!C3:C1000="CxC")*(TRANSACCIONES!M3:M1000="Pendiente"),"")'  # Prioridad CxC (calculado en TRANS)
     ws['L3'] = ""  # Contacto manual
 
     # Formatos
@@ -700,12 +702,12 @@ def crear_hoja_cierre_mensual(wb):
     fila += 2
 
     ws[f'A{fila}'] = "Total CxP a arrastrar:"
-    ws[f'B{fila}'] = '=SUM(CxP!H:H)'
+    ws[f'B{fila}'] = '=SUM(CxP!H3:H1000)'
     ws[f'B{fila}'].number_format = '$#,##0.00'
     fila += 1
 
     ws[f'A{fila}'] = "Total CxC a arrastrar:"
-    ws[f'B{fila}'] = '=SUM(CxC!H:H)'
+    ws[f'B{fila}'] = '=SUM(CxC!H3:H1000)'
     ws[f'B{fila}'].number_format = '$#,##0.00'
     fila += 1
 
@@ -892,7 +894,7 @@ def crear_hoja_balance_general(wb):
     fila += 1
 
     ws[f'A{fila}'] = "  Cuentas por Cobrar (CxC)"
-    ws[f'B{fila}'] = '=SUM(CxC!H:H)'
+    ws[f'B{fila}'] = '=SUM(CxC!H3:H1000)'
     ws[f'B{fila}'].number_format = '$#,##0.00'
     fila += 1
 
@@ -947,7 +949,7 @@ def crear_hoja_balance_general(wb):
     fila += 1
 
     ws[f'A{fila}'] = "  Cuentas por Pagar (CxP)"
-    ws[f'B{fila}'] = '=SUM(CxP!H:H)'
+    ws[f'B{fila}'] = '=SUM(CxP!H3:H1000)'
     ws[f'B{fila}'].number_format = '$#,##0.00'
     fila += 1
 
