@@ -13,16 +13,17 @@
 - [x] **Idioma Excel:** INGLÉS (Office 365)
 - [x] **Fórmulas:** SUM, IF, SUMIF, FILTER (NO SUMA)
 - [x] **Separador:** `,` (coma)
-- [x] **Hojas:** 21 confirmadas (15 originales + 6 nuevas profesionales)
+- [x] **Hojas:** 22 confirmadas (15 originales + 6 nuevas profesionales + 1 ALIAS)
 - [x] **Datos:** Actuales y verificados
 - [x] **Consistencia:** Español (datos usuario) + Inglés (fórmulas)
 - [x] **Imports:** Completos al inicio
 - [x] **Validaciones:** Estrictas
 - [x] **Mejores Prácticas:** Aplicadas según GAAP/NIIF
+- [x] **Generador:** xlwings (garantiza compatibilidad 100% con FILTER)
 
 ---
 
-## 📋 ÍNDICE DE HOJAS (21 TOTAL)
+## 📋 ÍNDICE DE HOJAS (22 TOTAL)
 
 | # | Hoja | Tipo | Propósito |
 |---|------|------|-----------|
@@ -47,6 +48,7 @@
 | 19 | **BALANCE_GENERAL** | Auto | 🆕 Estado situación financiera |
 | 20 | **ESTADO_RESULTADOS** | Auto | 🆕 P&L - Ganancias y pérdidas |
 | 21 | **INSTRUCCIONES** | Info | 🆕 Guía de uso paso a paso |
+| 22 | **ALIAS** | ✏️ Editable | 🆕 Normalización de entidades (36 registros) |
 
 ---
 
@@ -998,11 +1000,113 @@ Guía paso a paso para usar el sistema.
 
 ---
 
+## 🏗️ HOJA 22: ALIAS (Sistema de Normalización) 🆕
+
+### Propósito
+Permitir normalización de nombres de clientes, proveedores y bancos que aparecen con variaciones en TRANSACCIONES.
+
+**Ejemplo de uso:** Un cliente puede aparecer como "VWR International", "VWR", "Avantor" o "IL" en diferentes transacciones. Esta hoja permite definir un nombre estándar y hasta 5 alias.
+
+### Tipo
+✏️ **EDITABLE** - El usuario agrega nuevos alias conforme aparezcan variaciones.
+
+### Columnas (10 TOTAL)
+
+| Col | Campo | Tipo | Ancho | Dropdown | Formato | Propósito |
+|-----|-------|------|-------|----------|---------|-----------|
+| **A** | Tipo | List | 12 | Cliente/Proveedor/Banco | Text | Clasificación |
+| **B** | Nombre Estándar | Text | 35 | No | Text | Nombre oficial |
+| **C** | Alias 1 | Text | 20 | No | Text | Primera variación |
+| **D** | Alias 2 | Text | 20 | No | Text | Segunda variación |
+| **E** | Alias 3 | Text | 20 | No | Text | Tercera variación |
+| **F** | Alias 4 | Text | 20 | No | Text | Cuarta variación |
+| **G** | Alias 5 | Text | 20 | No | Text | Quinta variación |
+| **H** | Categoría | List | 12 | VIP/Regular/Principal/Banco | Text | Nivel de importancia |
+| **I** | Notas | Text | 30 | No | Text | Facturación, observaciones |
+| **J** | Última Actualización | Date | 18 | No | DD/MM/YYYY | Control cambios |
+
+### Dropdowns
+```python
+Tipo: "Cliente,Proveedor,Banco"
+Categoría: "VIP,Regular,Principal,Banco"
+```
+
+### Datos Pre-cargados (36 registros)
+
+#### Clientes VIP (3)
+1. Grupo Acción Comercial S.A. → Facturación Nov: $1689.04
+2. VWR International Ltda → Facturación Nov: $1400.00
+3. Alfipac (Almacén Fiscal Pacífico) → Facturación Nov: $761.05
+
+#### Clientes Regular (19)
+4-22. Clientes con facturación desde $42.38 hasta $691.56
+
+#### Proveedores Principal (5)
+23. Intcomex Costa Rica
+24. Eurocomp S.A.
+25. CompuEconómicos
+26. TD Synex
+27. ICD Soft
+
+#### Bancos (9)
+28-36. Cuentas BNCR y Promerica (CRC y USD)
+
+### Layout Completo
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│ A1:J1 (merged) - SISTEMA DE NORMALIZACIÓN DE ENTIDADES                │
+│ [Fondo: #1F4788, Texto: Blanco, Bold 14pt]                           │
+├────────────────────────────────────────────────────────────────────────┤
+│ A2:J2 - 💡 Esta hoja permite normalizar nombres...                    │
+│ [Italic, merged]                                                      │
+├────────────────────────────────────────────────────────────────────────┤
+│ A4:J4 - Headers [Bold, fondo azul, texto blanco]                     │
+├────────────────────────────────────────────────────────────────────────┤
+│ A5:J40 - Datos pre-cargados (36 registros)                           │
+├────────────────────────────────────────────────────────────────────────┤
+│ A45:A48 - Instrucciones de uso                                        │
+└────────────────────────────────────────────────────────────────────────┘
+```
+
+### Instrucciones Incorporadas (Filas 45-48)
+
+```
+📋 INSTRUCCIONES:
+1. Cuando aparezca una variación de nombre, agrégala como 'Alias' en la fila correspondiente
+2. Ejecuta: python scripts/normalizar_entidades_universal_v3.py
+3. El script unificará todos los nombres automáticamente
+```
+
+### Integración con Sistema
+
+**Futuro:** Script Python `normalizar_entidades_universal_v3.py` procesará esta hoja para:
+- Unificar nombres en TRANSACCIONES
+- Generar reportes consolidados por cliente real
+- Evitar duplicados en análisis
+
+### Ejemplo Práctico
+
+**Problema:** En TRANSACCIONES aparecen:
+- Fila 10: "VWR International"
+- Fila 25: "VWR"
+- Fila 40: "Avantor"
+- Fila 55: "IL"
+
+**Solución:** En ALIAS, fila 6:
+| Tipo | Nombre Estándar | Alias 1 | Alias 2 | Alias 3 | Alias 4 |
+|------|-----------------|---------|---------|---------|---------|
+| Cliente | VWR International Ltda | VWR International | IL | Avantor | VWR |
+
+El script reconocerá todas las variaciones y las unificará bajo "VWR International Ltda".
+
+---
+
 ## ✅ VALIDACIÓN PRE-CODIFICACIÓN FINAL
 
 **Especificación COMPLETA y APROBADA por usuario.**
 
-**Próximo paso:** Generar código Python completo (~2500 líneas) que implementa EXACTAMENTE estas 21 hojas.
+**Próximo paso:** Generar código Python completo (~2500 líneas) que implementa EXACTAMENTE estas 22 hojas (actualizado).
 
 **Fecha:** 16 de noviembre, 2025
 **Status:** ✅ APROBADO - PROCEDER A CODIFICACIÓN
