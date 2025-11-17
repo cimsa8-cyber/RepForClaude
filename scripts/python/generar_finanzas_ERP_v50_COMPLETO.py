@@ -50,7 +50,7 @@ from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.datavalidation import DataValidation
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 import os
 
 # ═══════════════════════════════════════════════════════════════════════
@@ -427,13 +427,50 @@ def crear_hoja_transacciones(wb):
         for col, valor in enumerate(tarjeta, start=1):
             ws.cell(row=i, column=col, value=valor)
 
+    # PRE-CALCULAR columnas S, T, U, V, W para las 4 tarjetas (filas 3-6)
+    # Esto asegura que FILTER puede leer datos inmediatamente sin esperar a que Excel calcule
+    for i, tarjeta in enumerate(tarjetas, start=3):
+        fecha = tarjeta[0]  # HOY
+        moneda = tarjeta[4]  # USD o CRC
+        monto = tarjeta[5]   # Monto
+        categoria = tarjeta[2]  # "CxP"
+
+        # Columna S: Días Transcurridos (hoy - fecha = 0 porque fecha es HOY)
+        ws.cell(row=i, column=19, value=0)
+        ws.cell(row=i, column=19).number_format = '0'
+
+        # Columna T: Equiv USD
+        if moneda == "USD":
+            equiv_usd = monto
+        else:  # CRC
+            equiv_usd = monto / TC_ACTUAL
+        ws.cell(row=i, column=20, value=equiv_usd)
+        ws.cell(row=i, column=20).number_format = '$#,##0.00'
+
+        # Columna U: Fecha Vencimiento (Fecha + 30 días)
+        fecha_venc = fecha + timedelta(days=30)
+        ws.cell(row=i, column=21, value=fecha_venc)
+        ws.cell(row=i, column=21).number_format = 'DD/MM/YY'
+
+        # Columna V: Prioridad CxP (días=0, entonces "Baja")
+        if categoria == "CxP":
+            ws.cell(row=i, column=22, value="Baja")  # 0 días < 30
+        else:
+            ws.cell(row=i, column=22, value="")
+
+        # Columna W: Prioridad CxC
+        if categoria == "CxC":
+            ws.cell(row=i, column=23, value="Baja")
+        else:
+            ws.cell(row=i, column=23, value="")
+
     # Fórmula columna Q (TC Aplicado) - Filas 7 en adelante
     for fila in range(7, 1001):
         celda_q = ws.cell(row=fila, column=17)  # Columna Q
         celda_q.value = f'=IF(E{fila}="USD",CONFIG!$B$5,1)'
         celda_q.number_format = '0.00'
 
-    # Fórmula columna R (Validación)
+    # Fórmula columna R (Validación) - TODAS las filas
     for fila in range(3, 1001):
         celda_r = ws.cell(row=fila, column=18)  # Columna R
         celda_r.value = f'=IF(AND(A{fila}<>"",ISNUMBER(A{fila}),B{fila}<>"",C{fila}<>"",OR(E{fila}="USD",E{fila}="CRC"),F{fila}>0,ISNUMBER(Q{fila}),Q{fila}>0),"✓ OK","✗ ERROR: Revisa datos")'
@@ -447,8 +484,8 @@ def crear_hoja_transacciones(wb):
     crear_dropdown(ws, 'M3:M1000', 'Pagado,Pendiente,Cobrado,Cancelado')
     crear_dropdown(ws, 'P3:P1000', 'Personal,Negocio')
 
-    # Fórmulas COLUMNAS CALCULADAS (S, T, U, V, W)
-    for fila in range(3, 1001):
+    # Fórmulas COLUMNAS CALCULADAS (S, T, U, V, W) - Solo para filas 7+ (usuario agregará datos)
+    for fila in range(7, 1001):
         # Columna S: Días Transcurridos
         ws.cell(row=fila, column=19).value = f'=IF(A{fila}<>"",TODAY()-A{fila},"")'
         ws.cell(row=fila, column=19).number_format = '0'
