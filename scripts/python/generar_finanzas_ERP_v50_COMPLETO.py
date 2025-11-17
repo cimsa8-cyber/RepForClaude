@@ -220,7 +220,7 @@ def crear_hoja_resumen(wb):
     fila += 1
 
     ws[f'A{fila}'] = "Ratio Liquidez:"
-    ws[f'B{fila}'] = f'=IFERROR(B{fila-1}/B{fila},0)'
+    ws[f'B{fila}'] = f'=IFERROR(B{fila-2}/B{fila-1},0)'  # Activo Corriente / Pasivo Corriente
     ws[f'B{fila}'].number_format = '0.00'
     # Formato condicional: verde >1.5, amarillo 1-1.5, rojo <1
     fila += 1
