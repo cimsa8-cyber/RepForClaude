@@ -77,10 +77,6 @@ try:
     app.display_alerts = False
     wb = app.books.add()
 
-    # Eliminar hoja default
-    for sheet in wb.sheets:
-        sheet.delete()
-
     print("✓ Excel iniciado correctamente\n")
 
     # ═════════════════════════════════════════════════════════════════
@@ -491,6 +487,29 @@ try:
             wb.sheets[nombre].api.Move(Before=wb.sheets[0].api)
 
     print("✓ Hojas reordenadas correctamente")
+
+    # ═════════════════════════════════════════════════════════════════
+    # ELIMINAR HOJAS DEFAULT
+    # ═════════════════════════════════════════════════════════════════
+    print("\n🗑️  Eliminando hojas default de Excel...")
+
+    # Eliminar hojas que se llaman Sheet, Sheet1, Hoja1, etc.
+    hojas_a_eliminar = []
+    for sheet in wb.sheets:
+        nombre = sheet.name
+        # Detectar hojas default (Sheet, Sheet1, Hoja, Hoja1, etc.)
+        if nombre.startswith(('Sheet', 'Hoja')) or nombre in ['Sheet1', 'Sheet2', 'Sheet3']:
+            hojas_a_eliminar.append(nombre)
+
+    for nombre in hojas_a_eliminar:
+        try:
+            wb.sheets[nombre].delete()
+            print(f"  ✓ Eliminada hoja default: {nombre}")
+        except:
+            pass  # Si falla, continuar
+
+    if not hojas_a_eliminar:
+        print("  ✓ No hay hojas default que eliminar")
 
     # ═════════════════════════════════════════════════════════════════
     # GUARDAR ARCHIVO
